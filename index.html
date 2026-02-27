@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lilo Living — Retail Partnership Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--sand:#EFF3F7;--charcoal:#1A2B3C;--sage:#009999;--sage-m:#00CCCC;--sage-l:#E0F5F5;--terra:#C4724E;--terra-l:#F2DDD1;--gray:#6B7A8D;--div:#D0DCE8;--card:#FFFFFF;--header-bg:#009999;--highlight:#11FFFF;--fh:'DM Sans','Helvetica Neue',sans-serif;--fb:'DM Sans','Helvetica Neue',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--sand);font-family:var(--fb);color:var(--charcoal);min-height:100vh}
+.wrap{max-width:840px;margin:0 auto;padding:32px 40px 60px}
+/* ── Site Header ── */
+.site-header{background:var(--header-bg);width:100%}
+.site-header-inner{max-width:840px;margin:0 auto;padding:28px 40px 0}
+.site-header-brand{display:flex;align-items:center;gap:20px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.15)}
+.site-header-logo{font-family:var(--fb);font-size:36px;font-weight:800;color:#fff;letter-spacing:-.04em;line-height:1}
+.site-header-text{display:flex;flex-direction:column;gap:4px;border-left:2px solid var(--highlight);padding-left:20px}
+.site-header-title{font-family:var(--fb);font-size:16px;font-weight:600;color:#fff;letter-spacing:.01em}
+.site-header-tagline{font-size:12px;color:rgba(255,255,255,.7);letter-spacing:.02em}
+/* ── Main Nav Tabs ── */
+.main-nav{background:var(--header-bg);padding-bottom:0}
+.main-nav-inner{max-width:840px;margin:0 auto;padding:0 40px;display:flex;align-items:flex-end;gap:6px}
+.main-tab{
+  padding:13px 28px 15px;
+  background:rgba(0,0,0,.2);
+  border:none;
+  border-radius:10px 10px 0 0;
+  font-family:var(--fb);font-size:14px;font-weight:600;
+  color:rgba(255,255,255,.65);
+  cursor:pointer;letter-spacing:.01em;
+  transition:all .2s;
+  position:relative;
+  top:1px;
+}
+.main-tab:hover{background:rgba(0,0,0,.1);color:rgba(255,255,255,.9)}
+.main-tab.active{
+  background:var(--sand);
+  color:var(--sage);
+  font-weight:700;
+  box-shadow:0 -2px 0 var(--highlight);
+}
+.main-tab-strip{background:var(--sand);border-bottom:1px solid var(--div);height:1px;margin-bottom:0}
+.card{padding:24px;background:var(--card);border-radius:10px;border:1px solid var(--div);margin-bottom:16px}
+.label{font-family:var(--fb);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);font-weight:600;margin-bottom:12px}
+.profiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.prof-btn{padding:14px 16px;border:1.5px solid var(--div);border-radius:8px;background:var(--card);color:var(--charcoal);font-family:var(--fb);font-size:13px;cursor:pointer;text-align:left;transition:all .2s}
+.prof-btn.active{border-color:var(--sage);background:var(--sage);color:#fff;font-weight:600}
+.prof-btn small{display:block;font-size:10px;opacity:.6;margin-top:4px}
+.brief{margin-bottom:28px;padding:20px 24px;background:rgba(0,153,153,.06);border-radius:10px;border-left:3px solid var(--sage)}
+.brief h3{font-family:var(--fb);font-size:20px;margin-bottom:8px;font-weight:600}
+.brief p{font-size:13px;color:var(--gray);line-height:1.6}
+.tabs{display:flex;border-bottom:1px solid var(--div);margin-bottom:40px}
+.tab{flex:1;padding:16px 12px;background:none;border:none;border-bottom:2px solid transparent;font-family:var(--fb);font-size:13px;color:var(--gray);cursor:pointer;letter-spacing:.03em;transition:all .3s}
+.tab.active{border-bottom-color:var(--sage);color:var(--sage);font-weight:600}
+.tab.locked{opacity:.5;cursor:not-allowed}
+h2.section{font-family:var(--fb);font-size:30px;font-weight:700;margin-bottom:10px;letter-spacing:-.02em}
+p.section-desc{font-size:15px;color:var(--gray);line-height:1.7;max-width:600px;margin-bottom:32px}
+.progress{display:flex;gap:6px;margin-bottom:32px}
+.progress span{flex:1;height:3px;border-radius:2px;background:var(--div);transition:background .4s}
+.progress span.done{background:var(--sage)}
+.q-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:10px}
+.q-title{font-family:var(--fb);font-size:22px;font-weight:600;margin-bottom:8px;line-height:1.4}
+.q-ctx{font-size:12px;color:var(--gray);font-style:italic;margin-bottom:28px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{padding:16px 20px;border:1.5px solid var(--div);border-radius:8px;background:var(--card);color:var(--charcoal);font-family:var(--fb);font-size:14px;text-align:left;cursor:pointer;transition:all .2s}
+.opt:hover{border-color:var(--gray)}
+.opt.sel{border-color:var(--sage);background:var(--sage);color:#fff;font-weight:500}
+.opt .opt-desc{font-size:12px;opacity:.75;line-height:1.5;margin-top:4px}
+.btn{padding:16px 36px;background:var(--sage);color:#fff;border:none;border-radius:8px;font-family:var(--fb);font-size:15px;cursor:pointer;font-weight:600;width:100%;margin-top:28px;transition:background .2s}
+.btn:hover{background:#007A7A}
+.btn-back{margin-top:12px;padding:10px 20px;background:none;color:var(--gray);border:none;font-family:var(--fb);font-size:13px;cursor:pointer}
+.result-box{border-radius:12px;padding:36px 32px;margin-bottom:28px}
+.result-box .tier{font-family:var(--fb);font-size:32px;margin-bottom:6px;font-weight:700}
+.result-box .pct{font-size:14px;color:var(--gray);margin-bottom:20px}
+.score-bar{border-radius:6px;height:8px;overflow:hidden;margin-bottom:24px}
+.score-bar-inner{height:100%;border-radius:6px;transition:width 1s ease}
+.breakdown-item{margin-bottom:14px}
+.breakdown-item .row{display:flex;justify-content:space-between;margin-bottom:4px}
+.breakdown-item .row span:first-child{font-size:13px}
+.breakdown-item .row span:last-child{font-size:12px;color:var(--gray)}
+.breakdown-bar{background:var(--div);border-radius:3px;height:4px;overflow:hidden}
+.breakdown-bar-inner{height:100%;border-radius:3px;transition:width .6s}
+.breakdown-note{font-size:11px;color:var(--gray);font-style:italic;margin-top:4px;line-height:1.5}
+.steps .step{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--div)}
+.steps .step:last-child{border-bottom:none}
+.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.step-text{font-size:14px;line-height:1.5}
+.model-card{margin-bottom:20px;padding:24px;background:var(--card);border-radius:10px;border:1px solid var(--div)}
+.model-card .icon-label{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.model-card .icon-label span.icon{font-size:18px}
+.model-card .icon-label span.lbl{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);font-weight:600}
+.model-card h4{font-family:var(--fb);font-size:19px;font-weight:600;margin-bottom:10px}
+.model-card p{font-size:14px;line-height:1.7;margin-bottom:14px}
+.model-card .meta{display:flex;gap:20px;padding-top:12px;border-top:1px solid var(--div);font-size:13px}
+.model-card .meta .meta-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--gray)}
+.oblig{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid var(--div)}
+.oblig-col h5{font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.oblig-col.lilo h5{color:var(--sage)}
+.oblig-col.retailer h5{color:var(--terra)}
+.oblig-col li{font-size:12px;line-height:1.6;margin-bottom:4px;list-style:none;padding-left:16px;position:relative}
+.oblig-col li::before{content:"→";position:absolute;left:0;color:var(--gray)}
+.calc-header{border-radius:12px;padding:28px 28px 16px;margin-bottom:32px}
+.sliders{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px}
+.slider-card{padding:20px;background:var(--card);border-radius:10px;border:1px solid var(--div)}
+.slider-card .s-label{font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.slider-card .s-val{font-family:var(--fb);font-size:26px;margin-bottom:12px;font-weight:700}
+input[type=range]{-webkit-appearance:none;appearance:none;background:var(--div);border-radius:2px;height:4px;width:100%;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--sage);cursor:pointer;border:3px solid var(--sand);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.impact-box{background:var(--header-bg);border-radius:12px;padding:32px;color:#fff;margin-bottom:24px}
+.impact-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:28px}
+.impact-num{font-family:var(--fb);font-size:32px;margin-bottom:4px;font-weight:700}
+.impact-label{font-size:12px;color:var(--highlight)}
+.compare-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px}
+.compare-bar{background:rgba(255,255,255,.1);border-radius:4px;height:10px;overflow:hidden;margin-bottom:12px}
+.compare-bar-inner{height:100%;border-radius:4px}
+.kpi-section{margin-top:32px}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kpi-item{padding:16px;background:var(--card);border-radius:8px;border:1px solid var(--div)}
+.kpi-item .kpi-name{font-size:12px;font-weight:600;color:var(--charcoal);margin-bottom:4px}
+.kpi-item .kpi-target{font-family:var(--fb);font-size:20px;font-weight:700;color:var(--sage);margin-bottom:2px}
+.kpi-item .kpi-desc{font-size:11px;color:var(--gray);line-height:1.4}
+.scale-triggers{margin-top:24px;padding:24px;background:var(--sage-l);border-radius:10px;border:1px solid rgba(0,153,153,.2)}
+.scale-triggers h4{font-family:var(--fb);font-size:19px;margin-bottom:12px;font-weight:600}
+.trigger-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,139,111,.15);font-size:13px}
+.trigger-item:last-child{border-bottom:none}
+.trigger-check{width:20px;height:20px;border-radius:4px;background:var(--sage);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.summary-section{margin-top:40px;padding:32px;background:var(--header-bg);border-radius:12px;color:#fff}
+.summary-section h3{font-family:var(--fb);font-size:24px;font-weight:700;margin-bottom:20px}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.summary-block{padding:20px;background:rgba(255,255,255,.06);border-radius:8px}
+.summary-block .sb-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--highlight);margin-bottom:8px;font-weight:600}
+.summary-block .sb-value{font-family:var(--fb);font-size:22px;margin-bottom:4px;font-weight:700}
+.summary-block .sb-detail{font-size:12px;color:var(--sage-m);line-height:1.5}
+.note{font-size:12px;color:var(--gray);font-style:italic;line-height:1.6;margin-top:16px}
+.assumptions{padding:20px 24px;background:var(--sand);border-radius:10px;margin-bottom:8px}
+.assumptions-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:13px}
+.assumptions-grid span{color:var(--gray)}
+.hidden{display:none}
+/* Internal Economics Module */
+.internal-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#6B4E8B,#8B6BAE)}
+.econ-sliders{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:28px}
+.econ-slider{padding:16px;background:var(--card);border-radius:10px;border:1px solid var(--div)}
+.econ-slider .s-label{font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.econ-slider .s-val{font-family:var(--fb);font-size:22px;margin-bottom:10px;font-weight:700}
+.econ-dashboard{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.econ-metric{padding:20px;border-radius:10px;border:1px solid var(--div);background:var(--card)}
+.econ-metric .em-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin-bottom:6px}
+.econ-metric .em-val{font-family:var(--fb);font-size:28px;margin-bottom:4px;font-weight:700}
+.econ-metric .em-sub{font-size:12px;color:var(--gray);line-height:1.5}
+.econ-waterfall{margin-bottom:24px}
+.wf-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--div)}
+.wf-row:last-child{border-bottom:none}
+.wf-label{width:180px;font-size:13px;flex-shrink:0}
+.wf-bar-wrap{flex:1;height:20px;background:var(--div);border-radius:4px;overflow:hidden;position:relative}
+.wf-bar{height:100%;border-radius:4px;transition:width .4s}
+.wf-val{width:90px;text-align:right;font-family:var(--fb);font-size:16px;flex-shrink:0;font-weight:600}
+.econ-verdict{padding:28px;border-radius:12px;margin-bottom:24px;text-align:center}
+.econ-verdict .ev-icon{font-size:36px;margin-bottom:8px}
+.econ-verdict .ev-title{font-family:var(--fb);font-size:24px;margin-bottom:8px;font-weight:700}
+.econ-verdict .ev-desc{font-size:14px;line-height:1.7;max-width:520px;margin:0 auto}
+.sensitivity-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+.sensitivity-card{padding:16px;background:var(--card);border-radius:8px;border:1px solid var(--div);text-align:center}
+.sensitivity-card .sc-scenario{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--gray);margin-bottom:6px}
+.sensitivity-card .sc-val{font-family:var(--fb);font-size:22px;margin-bottom:4px;font-weight:700}
+.sensitivity-card .sc-note{font-size:11px;color:var(--gray);line-height:1.4}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeIn .4s ease}
+/* Multi-select options */
+.opts-multi{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt-multi{padding:14px 18px;border:1.5px solid var(--div);border-radius:8px;background:var(--card);color:var(--charcoal);font-family:var(--fb);font-size:14px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+.opt-multi:hover{border-color:var(--sage)}
+.opt-multi.sel{border-color:var(--sage);background:var(--sage-l);color:var(--charcoal);font-weight:500}
+.opt-multi .check{width:18px;height:18px;border-radius:4px;border:2px solid var(--div);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;background:#fff}
+.opt-multi.sel .check{background:var(--sage);border-color:var(--sage);color:#fff;font-size:11px}
+.freetext-input{margin-top:6px;width:100%;padding:10px 14px;border:1.5px solid var(--sage);border-radius:6px;font-family:var(--fb);font-size:13px;color:var(--charcoal);background:#fff;outline:none}
+.freetext-input:focus{border-color:var(--highlight);box-shadow:0 0 0 3px rgba(17,255,255,.15)}
+.btn-next{padding:14px 36px;background:var(--sage);color:#fff;border:none;border-radius:8px;font-family:var(--fb);font-size:15px;cursor:pointer;font-weight:600;margin-top:24px;transition:background .2s;display:block;width:100%}
+.btn-next:hover{background:#007A7A}
+.btn-next:disabled{opacity:.45;cursor:not-allowed}
+</style>
+</head>
+<body>
+<div class="site-header">
+  <div class="site-header-inner">
+    <div class="site-header-brand">
+      <div class="site-header-logo">LILO</div>
+      <div class="site-header-text">
+        <div class="site-header-title">Retail Partnership Tool</div>
+        <div class="site-header-tagline">Reduce markdowns. Recover margin. Turn unsold stock into revenue.</div>
+      </div>
+    </div>
+  </div>
+  <div class="main-nav">
+    <div class="main-nav-inner">
+      <button class="main-tab active" id="mainTab-new" onclick="setMainTab('new')">＋ New Assessment</button>
+      <button class="main-tab" id="mainTab-qualify" onclick="setMainTab('qualify')">☑ Partner Qualification</button>
+    </div>
+  </div>
+  <div class="main-tab-strip"></div>
+</div>
+<div class="wrap">
+<div id="briefBox"></div>
+<!-- Module Tabs (only shown in qualify mode) -->
+<div class="tabs" id="tabs" style="display:none"></div>
+<!-- Content -->
+<div id="content"></div>
+</div>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────
+const PROFILES={
+nick_scali:{name:"Nick Scali",desc:"ASX-listed premium furniture retailer. 64 Nick Scali + 43 Plush stores AU/NZ. ~$470M revenue. Dedicated clearance outlets (Melbourne, Castle Hill). 5,000+ containers annually. Core: leather & fabric lounges, dining, occasional.",
+fit:{stock_volume:4,product_category:[4,3],brand_position:4,current_markdown:[4,3],geography:[4],condition:[4],motivation:[4,3]},
+fitNotes:{stock_volume:"100+ stores with continuous showroom rotations. Plush integration creating surplus. Clearance outlets indicate high volume.",product_category:"Core sofas & lounges — highest resale demand. Also dining, entertainment, occasional.",brand_position:"Premium positioning, strong recognition. Commands resale premium.",current_markdown:"Dedicated clearance outlets with up to 40% off. High overhead to shift surplus.",geography:"Multiple QLD locations incl. Helensvale, Capalaba (Plush).",condition:"Primarily ex-display (like new). Returns assessed before resale.",motivation:"Clearance outlets expensive (lease, staff, logistics). Lilo offers recovery without overhead."},
+model:{listing_ownership:"hybrid",logistics:"customer_pickup",pricing_approach:"floor_price",stock_frequency:"continuous",brand_visibility:"branded"},
+modelNotes:{listing_ownership:"Comprehensive product content exists. Lilo optimises for resale audience.",logistics:"Premium brand — buyer pickup from designated showroom areas preferred.",pricing_approach:"Strong brand equity — floor price protects while Lilo maximises recovery.",stock_frequency:"100+ stores = continuous ex-display turnover year-round.",brand_visibility:"Brand recognition is major resale asset. Branded page drives trust."},
+calc:{avgRRP:2800,monthlyUnits:80,currentRecovery:30,warehouseCostPerUnit:55,avgWeeksInWarehouse:8}},
+
+freedom:{name:"Freedom",desc:"Major AU furniture & homewares retailer. Existing Lilo partner for ex-display stock. Wide range from sofas to décor. Mid-to-premium positioning. Learnings from pilot inform this framework.",
+fit:{stock_volume:4,product_category:[4,3,3,1],brand_position:3,current_markdown:[4,3],geography:[4],condition:[4,3],motivation:[4,3]},
+fitNotes:{stock_volume:"Large national network, frequent changeovers. Already supplying Lilo.",product_category:"Full range: sofas, dining, bedroom, storage, décor.",brand_position:"Mid-to-premium. Good resale retention.",current_markdown:"Used in-store markdowns. Lilo partnership proves willingness.",geography:"National with strong QLD network.",condition:"Mix of ex-display and customer returns.",motivation:"Already partnered — proven alignment."},
+model:{listing_ownership:"hybrid",logistics:"retailer_manages",pricing_approach:"lilo_led",stock_frequency:"continuous",brand_visibility:"branded"},
+modelNotes:null,
+calc:{avgRRP:1800,monthlyUnits:60,currentRecovery:25,warehouseCostPerUnit:45,avgWeeksInWarehouse:6}},
+
+coco_republic:{name:"Coco Republic",desc:"Premium/luxury AU furniture & interior design house. Aspirational brand. Smaller network, high item values. Curated, design-led collections.",
+fit:{stock_volume:2,product_category:[4,3,3],brand_position:4,current_markdown:[3],geography:[1],condition:[4],motivation:[3]},
+fitNotes:{stock_volume:"Smaller network = lower volume, but high-value pieces.",product_category:"Premium sofas, dining, bedroom — strong resale.",brand_position:"Luxury. Significant resale premium.",current_markdown:"Selective markdowns, private sales.",geography:"Sydney/Melbourne focused. Limited QLD.",condition:"Showroom condition. High standards.",motivation:"Brand protection is primary concern."},
+model:{listing_ownership:"full_service",logistics:"customer_pickup",pricing_approach:"floor_price",stock_frequency:"seasonal",brand_visibility:"mixed"},
+modelNotes:null,
+calc:{avgRRP:4500,monthlyUnits:15,currentRecovery:35,warehouseCostPerUnit:65,avgWeeksInWarehouse:10}},
+
+custom:{name:"New Assessment",desc:null,fit:null,model:null,calc:null}
+};
+
+const FIT_QS=[
+{id:"stock_volume",num:1,q:"What volume of ex-display, returns, or seconds stock do you generate monthly?",opts:[{l:"Under 10 pieces",v:1},{l:"10–30 pieces",v:2},{l:"30–80 pieces",v:3},{l:"80+ pieces",v:4},{l:"Other",v:1,freetext:true}],w:3,ctx:"Higher volume = stronger partnership economics",multi:false},
+{id:"product_category",num:2,q:"What are your primary product categories?",opts:[{l:"Sofas & lounge",v:4},{l:"Dining & tables",v:3},{l:"Bedroom & storage",v:3},{l:"Décor & accessories",v:1},{l:"Bedding",v:2},{l:"Kitchen",v:1},{l:"Other",v:1,freetext:true}],w:2,ctx:"Larger furniture items have strongest resale demand",multi:true},
+{id:"brand_position",num:3,q:"How would you describe your brand positioning?",opts:[{l:"Premium / luxury",v:4},{l:"Mid-market quality",v:3},{l:"Value / mass market",v:1},{l:"Mixed range",v:2}],w:2,ctx:"Premium and mid-market brands retain higher resale value",multi:false},
+{id:"current_markdown",num:4,q:"How do you currently handle unsold, ex-display, or returned stock?",opts:[{l:"Deep in-store markdowns (60%+ off)",v:4},{l:"Bulk liquidation / clearance",v:3},{l:"Warehouse storage until sold",v:3},{l:"Donated or written off",v:2},{l:"Online marketplace",v:3},{l:"Other",v:2,freetext:true}],w:3,ctx:"Current approach determines margin recovery opportunity",multi:true},
+{id:"geography",num:5,q:"Where are you primarily located?",opts:[{l:"South East Queensland",v:4},{l:"Greater Brisbane",v:4},{l:"Regional QLD",v:2},{l:"Interstate",v:1},{l:"Other",v:1,freetext:true}],w:2,ctx:"Proximity impacts logistics cost and delivery feasibility",multi:true},
+{id:"condition",num:6,q:"What condition is the majority of your available stock in?",opts:[{l:"Like new / ex-display only",v:4},{l:"Minor cosmetic imperfections",v:3},{l:"Requires minor repair",v:2},{l:"Mixed conditions",v:2}],w:2,ctx:"Higher condition stock achieves better sell-through rates",multi:true},
+{id:"motivation",num:7,q:"What is the retailer's primary motivation for exploring resale partnerships?",opts:[{l:"Recover margin on marked-down stock",v:4},{l:"Free up warehouse / floor space",v:3},{l:"Sustainability credentials",v:2},{l:"Reach new customer segments",v:3}],w:1,ctx:"Alignment on commercial drivers ensures partnership success",multi:true}
+];
+
+const MODEL_QS=[
+{id:"listing_ownership",q:"Who should manage product listings?",opts:[{l:"Lilo manages everything",d:"Lilo photographs, writes descriptions, manages end-to-end",m:"full_service"},{l:"Shared responsibility",d:"You provide product info & images, Lilo handles optimisation",m:"hybrid"},{l:"Self-service with support",d:"Your team lists via seller portal with Lilo onboarding",m:"self_service"}]},
+{id:"logistics",q:"How should stock move to the buyer?",opts:[{l:"Customer picks up",d:"Buyer arranges pickup directly from the retailer's location — lowest cost, widest margin",m:"customer_pickup"},{l:"Retailer manages logistics",d:"Retailer handles delivery to buyer using their existing logistics infrastructure",m:"retailer_manages"}]},
+{id:"pricing_approach",q:"How should resale prices be set?",opts:[{l:"Lilo sets pricing",d:"Market data-driven for fastest sell-through at best margin",m:"lilo_led"},{l:"You set floor price, Lilo optimises",d:"Define minimum return, Lilo prices above",m:"floor_price"},{l:"Joint pricing agreement",d:"Collaborative based on RRP, condition, demand",m:"collaborative"}]},
+{id:"stock_frequency",q:"How frequently would stock be available?",opts:[{l:"Ongoing / continuous",d:"Weekly or fortnightly flow",m:"continuous"},{l:"Seasonal / campaign-based",d:"Aligned to changeovers or clearance events",m:"seasonal"},{l:"Ad hoc / as needed",d:"Irregular batches",m:"adhoc"}]},
+{id:"brand_visibility",q:"Brand visibility on Lilo's platform?",opts:[{l:"Branded partner page",d:"Dedicated collection page under your brand",m:"branded"},{l:"Listed under Lilo branding",d:"Discreet — protects primary pricing",m:"discreet"},{l:"Flexible by product line",d:"Some branded, some anonymous by tier",m:"mixed"}]}
+];
+
+const MODEL_INFO={
+listing_ownership:{full_service:{t:"Full-Service Listing",d:"Lilo manages complete listing process — photography, descriptions, pricing, platform management.",lilo:["Product photography & content creation","Listing optimisation & management","Buyer enquiry handling","Platform quality assurance"],ret:["Stage stock for photography","Provide product specs & RRP","Approve listings before going live","Flag condition issues accurately"]},hybrid:{t:"Hybrid Listing Model",d:"You supply product data & imagery. Lilo optimises for resale audience and manages platform.",lilo:["Listing optimisation for resale audience","Platform management & buyer comms","Pricing recommendations","Performance reporting"],ret:["Provide product images & descriptions","Supply stock data (SKU, RRP, condition)","Maintain content accuracy","Timely stock availability updates"]},self_service:{t:"Self-Service via Seller Portal",d:"Your team lists directly with templates and onboarding support.",lilo:["Seller portal access & training","Listing templates & guidelines","Platform promotion","Buyer payment processing"],ret:["Create & manage all listings","Photography & descriptions","Pricing within agreed parameters","Respond to stock enquiries"]}},
+logistics:{customer_pickup:{t:"Buyer Direct Pickup",d:"Buyers collect directly from the retailer's location. Lowest cost and maximises margin recovery.",lilo:["Coordinate buyer scheduling","Payment processing","Buyer communication","Dispute resolution"],ret:["Designate pickup location & hours","Staff availability for handover","Accurate item condition at handover","Secure storage until collection"]},retailer_manages:{t:"Retailer-Managed Logistics",d:"Retailer handles delivery to the buyer using their existing logistics and fulfilment infrastructure.",lilo:["Provide buyer delivery details","Coordinate handover confirmation","Track delivery completion","Handle post-delivery disputes"],ret:["Arrange and fund delivery to buyer","Use existing logistics infrastructure","Ensure safe transit and packaging","Confirm delivery with Lilo on completion"]}},
+pricing_approach:{lilo_led:{t:"Lilo-Led Dynamic Pricing",d:"Market data-driven pricing for fastest sell-through and strongest margin recovery.",lilo:["Set prices using market data","Adjust for demand & seasonality","Maximise recovery rate","Report on pricing performance"],ret:["Accept Lilo pricing recommendations","Provide accurate RRP & condition","No competing channel undercutting","Review pricing reports monthly"]},floor_price:{t:"Floor Price + Optimisation",d:"You define minimum return. Lilo prices above to maximise recovery while protecting brand.",lilo:["Price above agreed floor","Optimise for sell-through speed","Report recovery vs floor","Recommend floor adjustments"],ret:["Set floor price per category","Review floors quarterly","Accept Lilo pricing above floor","No public markdowns below Lilo price"]},collaborative:{t:"Collaborative Pricing",d:"Joint decisions based on RRP, condition, demand, and seasonal factors.",lilo:["Provide market demand data","Recommend pricing ranges","Report performance vs targets","Flag slow-moving stock"],ret:["Approve pricing per item/batch","Provide competitive context","Participate in pricing reviews","Timely approval turnaround"]}},
+stock_frequency:{continuous:{t:"Continuous Stock Pipeline",d:"Regular scheduled flow enabling consistent platform presence. Best long-term economics.",lilo:["Maintain listing pipeline","Consistent marketing presence","Regular performance reporting","Optimise based on sell-through data"],ret:["Weekly/fortnightly stock availability","Consistent volume commitment","Advance notice of range changes","Dedicated stock coordinator"]},seasonal:{t:"Seasonal Campaign Model",d:"Stock aligned to changeovers and clearance windows with planned marketing campaigns.",lilo:["Plan campaigns around stock drops","Concentrated marketing push","Seasonal performance reporting","Pre-season planning sessions"],ret:["Advance notice of seasonal timing","Batch stock preparation","Volume estimates per season","Coordinate with range team"]},adhoc:{t:"Ad Hoc Batches",d:"Stock supplied as available. Flexible, but predictable patterns recommended.",lilo:["List stock as received","Standard marketing inclusion","Per-batch reporting","Encourage regularity over time"],ret:["Notify Lilo of upcoming stock","Minimum batch size (5+ items)","Reasonable lead time for collection","Move toward predictable cadence"]}},
+brand_visibility:{branded:{t:"Branded Partner Presence",d:"Dedicated collection page under your brand. Builds resale equity and buyer trust.",lilo:["Create & maintain brand page","Brand-consistent presentation","Dedicated marketing features","Brand performance analytics"],ret:["Approve brand page presentation","Provide brand guidelines","Maintain brand-worthy stock quality","Engage on co-marketing opportunities"]},discreet:{t:"Discreet / Unbranded",d:"Listed as 'Retailer Stock'. Protects primary pricing channel.",lilo:["Anonymous listing management","No brand attribution","Standard platform inclusion","Confidential reporting"],ret:["Accept anonymous presentation","No public reference to Lilo channel","Maintain stock quality standards","Accept Lilo's presentation approach"]},mixed:{t:"Tiered Brand Visibility",d:"Brand some lines, keep others anonymous. Manage by product tier.",lilo:["Manage dual presentation","Per-tier marketing approach","Separate reporting by tier","Recommend tier allocation"],ret:["Define branded vs anonymous tiers","Provide tier-specific guidelines","Review tier allocation quarterly","Consistent quality across tiers"]}}
+};
+
+const MODEL_ICONS={listing_ownership:"📋",logistics:"🚚",pricing_approach:"💰",stock_frequency:"📦",brand_visibility:"🏷️"};
+const MODEL_NAMES={listing_ownership:"Listing Management",logistics:"Logistics & Fulfilment",pricing_approach:"Pricing Strategy",stock_frequency:"Stock Pipeline",brand_visibility:"Brand Visibility"};
+
+// ─── STATE ──────────────────────────────────────────────
+let state={mainTab:"new",profile:"custom",tab:"fit",fitAns:{},fitFreeText:{},modelAns:{},calcInputs:{avgRRP:1200,monthlyUnits:30,currentRecovery:25,warehouseCostPerUnit:40,avgWeeksInWarehouse:6},econInputs:{},fitQ:0,modelQ:0,fitDone:false,modelDone:false};
+
+const ECON_DEFAULTS={
+  pickupCost:85,photoCost:25,listingMins:20,deliveryCost:120,platformPctOverhead:8,csMinPerUnit:15
+};
+
+function isPrefill(){return state.mainTab==='qualify'&&state.profile!=="custom"&&PROFILES[state.profile].fit}
+
+function initEcon(){state.econInputs={...ECON_DEFAULTS}}
+function loadProfile(k){
+  state.profile=k;state.tab="fit";state.fitQ=0;state.modelQ=0;
+  const p=PROFILES[k];
+  if(p.fit){state.fitAns={...p.fit};state.modelAns={...p.model};state.calcInputs={...p.calc};state.fitDone=true;state.modelDone=true;}
+  else{state.fitAns={};state.modelAns={};state.calcInputs={avgRRP:1200,monthlyUnits:30,currentRecovery:25,warehouseCostPerUnit:40,avgWeeksInWarehouse:6};state.fitDone=false;state.modelDone=false;}
+  initEcon();
+  render();
+}
+
+function calcScore(ans){
+  let s=0,m=0;
+  FIT_QS.forEach(q=>{
+    m+=4*q.w;
+    const a=ans[q.id];
+    if(a===undefined||a===null) return;
+    if(Array.isArray(a)){
+      const vals=a.filter(v=>typeof v==='number');
+      if(vals.length>0) s+=Math.max(...vals)*q.w;
+    } else if(a==='other'){
+      s+=1*q.w; // Other = lowest score
+    } else {
+      s+=a*q.w;
+    }
+  });
+  return{score:s,max:m};
+}
+
+function getTier(s,m){
+  const p=s/m;
+  if(p>.75)return{tier:"High-Value Partner",color:"#2A8A3E",bg:"#E8F5EC",sum:"Strong alignment across volume, product fit, and commercial drivers. High-priority partnership with significant margin recovery potential.",acts:["Priority onboarding — fast-track to pilot","Dedicated account setup with Lilo team","Custom operating model co-design","Quarterly performance reviews from launch"]};
+  if(p>.50)return{tier:"Growth Opportunity",color:"#5BA033",bg:"#EDF6E8",sum:"Solid potential with areas to develop. Phased approach starting with highest-value categories would prove the model before scaling.",acts:["Start with focused pilot (top 1–2 categories)","Test logistics model before committing","Build content & photography capability","Review after 3 months and expand"]};
+  if(p>.25)return{tier:"Early Stage",color:"#C47A1A",bg:"#FEF3E2",sum:"Some potential but significant gaps to address before a pilot is viable. Worth a discovery conversation to understand if barriers can be resolved.",acts:["Identify key blockers (volume, geography, condition)","Share Lilo's minimum partner criteria","Revisit in 6 months if circumstances change","Consider a very limited trial on select items"]};
+  return{tier:"Not a Fit — At This Time",color:"#C0392B",bg:"#FDEDEC",sum:"Too many barriers to a viable partnership right now. Low volume, poor condition, geographic mismatch, or misaligned motivation make a pilot unlikely to succeed.",acts:["Revisit when volume or geography improves","Provide feedback on what would need to change","Keep on radar for future market expansion","Do not invest further BD time at this stage"]};
+}
+
+function fmt(n){return new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD",maximumFractionDigits:0}).format(n)}
+
+// ─── RENDER ──────────────────────────────────────────────
+function render(){
+  // Sync main nav tab active state
+  ['new','qualify'].forEach(t=>{
+    const el=document.getElementById('mainTab-'+t);
+    if(el) el.className='main-tab'+(state.mainTab===t?' active':'');
+  });
+  renderBrief();
+  const tabsEl=document.getElementById('tabs');
+  if(state.mainTab==='qualify'){
+    tabsEl.style.display='flex';
+    renderTabs();
+  } else if(state.mainTab==='new'&&state.fitDone){
+    // Show module tabs in new mode once fit is done (no profile selector, just tabs)
+    tabsEl.style.display='flex';
+    renderTabs();
+  } else {
+    tabsEl.style.display='none';
+  }
+  renderContent();
+}
+
+function renderProfiles(){
+  const el=document.getElementById("profiles");
+  el.innerHTML=Object.entries(PROFILES).map(([k,p])=>`<button class="prof-btn ${state.profile===k?"active":""}" onclick="loadProfile('${k}')"><div>${k==="custom"?"＋":"●"} ${p.name}</div><small>${k==="custom"?"Blank assessment":"Pre-filled"}</small></button>`).join("");
+}
+
+function renderProfiles(){
+  // Called only in qualify mode — renders partner selector above module tabs
+}
+
+function renderBrief(){
+  const el=document.getElementById("briefBox");
+  if(state.mainTab==='qualify'){
+    const p=PROFILES[state.profile];
+    // Partner selector cards
+    const qualifyKeys=['nick_scali','freedom','coco_republic'];
+    let h=`<div class="card" style="margin-bottom:24px"><div class="label">Select a Partner to Review</div><div class="profiles">`;
+    h+=qualifyKeys.map(k=>`<button class="prof-btn ${state.profile===k?'active':''}" onclick="loadProfile('${k}')"><div>${PROFILES[k].name}</div><small>Pre-filled assessment</small></button>`).join('');
+    h+=`</div></div>`;
+    // Partner brief
+    if(p&&p.desc) h+=`<div class="brief"><h3>${p.name}</h3><p>${p.desc}</p></div>`;
+    el.innerHTML=h;
+  } else {
+    // New assessment intro
+    el.innerHTML=`<div class="brief" style="border-left-color:var(--highlight)"><h3>Start a New Partner Assessment</h3><p>Work through the questions below to assess a potential retail partner's fit, configure an operating model, and model the commercial value of the partnership.</p></div>`;
+  }
+}
+
+function renderTabs(){
+  const el=document.getElementById("tabs");
+  const tabs=[{id:"fit",l:"01 — Partner Fit"},{id:"model",l:"02 — Operating Model"},{id:"value",l:"03 — Commercial Value"},{id:"summary",l:"04 — Summary Pack"},{id:"econ",l:"05 — Lilo Economics",internal:true}];
+  el.innerHTML=tabs.map(t=>{
+    const lock=(t.id==="model"&&!state.fitDone)||(t.id==="value"&&!state.modelDone)||(t.id==="summary"&&!state.modelDone)||(t.id==="econ"&&!state.modelDone);
+    const act=state.tab===t.id;
+    return`<button class="tab ${act?"active":""} ${lock?"locked":""}" onclick="${lock?"":"setTab('"+t.id+"')"}" style="${t.internal?"border-top:2px solid #8B6BAE;":""}">${t.l}${t.internal?" 🔐":""}${lock?" 🔒":""}</button>`;
+  }).join("");
+}
+
+function setMainTab(t){
+  state.mainTab=t;
+  if(t==='qualify'&&state.profile==='custom'){
+    state.profile='nick_scali';
+    const p=PROFILES['nick_scali'];
+    state.fitAns={...p.fit};state.modelAns={...p.model};state.calcInputs={...p.calc};
+    state.fitDone=true;state.modelDone=true;state.tab='fit';
+    initEcon();
+  }
+  if(t==='new'){
+    state.profile='custom';state.fitAns={};state.fitFreeText={};state.modelAns={};
+    state.calcInputs={avgRRP:1200,monthlyUnits:30,currentRecovery:25,warehouseCostPerUnit:40,avgWeeksInWarehouse:6};
+    state.fitDone=false;state.modelDone=false;state.fitQ=0;state.modelQ=0;state.tab='fit';
+    initEcon();
+  }
+  render();
+}
+
+function setTab(t){state.tab=t;render()}
+
+
+function renderContent(){
+  const el=document.getElementById("content");
+  if(state.tab==="fit")el.innerHTML=renderFit();
+  else if(state.tab==="model")el.innerHTML=renderModel();
+  else if(state.tab==="value")el.innerHTML=renderValue();
+  else if(state.tab==="summary")el.innerHTML=renderSummary();
+  else if(state.tab==="econ")el.innerHTML=renderEcon();
+}
+
+// ─── FIT TAB ──────────────────────────────────────────────
+function getFitVal(id){
+  const a=state.fitAns[id];
+  if(Array.isArray(a))return a.filter(v=>typeof v==='number');
+  return a!==undefined?a:null;
+}
+
+function isMultiSelected(id,v){
+  const a=state.fitAns[id];
+  if(Array.isArray(a))return a.includes(v);
+  return a===v;
+}
+
+function isOtherSelected(id){
+  const a=state.fitAns[id];
+  if(Array.isArray(a))return a.includes('other');
+  return false;
+}
+
+function fitToggleMulti(id,v){
+  if(!Array.isArray(state.fitAns[id]))state.fitAns[id]=[];
+  const idx=state.fitAns[id].indexOf(v);
+  if(idx>=0)state.fitAns[id].splice(idx,1);
+  else state.fitAns[id].push(v);
+  renderContent();
+}
+
+function fitSetOtherText(id,val){
+  state.fitFreeText[id]=val;
+}
+
+function fitNextQ(){
+  if(state.fitQ>=FIT_QS.length-1){state.fitDone=true;state.tab='fit';}
+  else state.fitQ++;
+  render();
+}
+
+function fitSelectSingle(id,v){
+  // Select without auto-advancing (used when question has an Other option)
+  state.fitAns[id]=v;
+  renderContent();
+}
+
+function fitSelectOther(id){
+  // Toggle Other selection for single-select questions
+  if(state.fitAns[id]==='other') state.fitAns[id]=null;
+  else state.fitAns[id]='other';
+  renderContent();
+}
+
+function fitSelect(v){
+  const q=FIT_QS[state.fitQ];
+  state.fitAns[q.id]=v;
+  if(state.fitQ>=FIT_QS.length-1){state.fitDone=true;state.tab='fit';}
+  else state.fitQ++;
+  render();
+}
+
+function fitBack(){if(state.fitQ>0){state.fitQ--;render()}}
+
+function hasAnswer(q){
+  const a=state.fitAns[q.id];
+  if(Array.isArray(a))return a.filter(v=>typeof v==='number').length>0;
+  if(a==='other')return true;
+  return a!==undefined&&a!==null;
+}
+
+function renderFit(){
+  const p=PROFILES[state.profile];const pf=isPrefill();
+  let h=`<div class="fade"><h2 class="section">${pf?"Partner Fit: "+p.name:"Lilo Partner Qualification"}</h2><p class="section-desc">${pf?"Pre-filled assessment based on "+p.name+"'s public profile. Scores are estimates — refine with actual data.":"Answer the questions below to assess the retailer's fit and generate a partnership recommendation."}</p>`;
+
+  if(pf||state.fitDone){
+    const{score,max}=calcScore(state.fitAns);const pct=Math.round(score/max*100);const tier=getTier(score,max);
+    h+=`<div class="result-box" style="background:${tier.bg};border:1px solid ${tier.color}33"><div class="label" style="color:${tier.color}">Assessment Result</div><div class="tier">${tier.tier}</div><div class="pct">Fit score: ${pct}%</div><div class="score-bar" style="background:${tier.color}22"><div class="score-bar-inner" style="width:${pct}%;background:${tier.color}"></div></div><p style="font-size:15px;line-height:1.7">${tier.sum}</p></div>`;
+    // Breakdown
+    if(pf&&p.fitNotes){
+      h+=`<div class="card"><div class="label">Score Breakdown</div>`;
+      FIT_QS.forEach(fq=>{
+        const v=state.fitAns[fq.id];
+        const scoreVal=Array.isArray(v)?Math.max(...v.filter(x=>typeof x==='number'),0):(v||0);
+        const bp=scoreVal/4*100;
+        const optLabel=Array.isArray(v)?v.filter(x=>typeof x==='number').map(n=>fq.opts.find(o=>o.v===n)?.l).filter(Boolean).join(', '):(fq.opts.find(o=>o.v===v)?.l||'');
+        const col=bp>=75?"var(--sage)":bp>=50?"var(--terra)":"var(--gray)";
+        const note=p.fitNotes[fq.id]||"";
+        h+=`<div class="breakdown-item"><div class="row"><span><strong style="font-size:10px;color:var(--gray)">${fq.num}.</strong> ${fq.q.substring(0,50)}${fq.q.length>50?"…":""}</span><span>${optLabel}</span></div><div class="breakdown-bar"><div class="breakdown-bar-inner" style="width:${bp}%;background:${col}"></div></div>${note?`<div class="breakdown-note">${note}</div>`:""}</div>`;
+      });
+      h+=`</div>`;
+    }
+    // Next steps
+    h+=`<div style="margin-bottom:28px"><div class="label">Recommended Next Steps</div><div class="steps">`;
+    tier.acts.forEach((a,i)=>{h+=`<div class="step"><div class="step-num" style="background:${tier.color}18;color:${tier.color}">${i+1}</div><div class="step-text">${a}</div></div>`});
+    h+=`</div></div>`;
+    h+=`<p class="note">This assessment is indicative and informed by Lilo Living's pilot framework methodology. Actual partnership terms are co-designed during onboarding.</p>`;
+    h+=`<button class="btn" onclick="setTab('model')">Continue to Operating Model →</button>`;
+  } else {
+    // Interactive questions
+    const q=FIT_QS[state.fitQ];
+    const answered=hasAnswer(q);
+    h+=`<div class="progress">${FIT_QS.map((_,i)=>`<span class="${i<state.fitQ?"done":i===state.fitQ?"done":""}"></span>`).join("")}</div>`;
+    h+=`<div class="q-label" style="display:flex;justify-content:space-between"><span>Question ${q.num} of ${FIT_QS.length}</span>${q.multi?'<span style="color:var(--sage);font-weight:600">Select all that apply</span>':''}</div>`;
+    h+=`<div class="q-title">${q.q}</div><div class="q-ctx">${q.ctx}</div>`;
+
+    if(q.multi){
+      // Multi-select layout
+      h+=`<div class="opts-multi">`;
+      q.opts.forEach(o=>{
+        const sel=isMultiSelected(q.id,o.freetext?'other':o.v);
+        h+=`<button class="opt-multi ${sel?'sel':''}" onclick="fitToggleMulti('${q.id}',${o.freetext?'\'other\'':o.v})"><div class="check">${sel?'✓':''}</div><span>${o.l}</span></button>`;
+        if(o.freetext&&isOtherSelected(q.id)){
+          h+=`</div><div style="margin:-4px 0 10px"><input class="freetext-input" type="text" placeholder="Please specify..." value="${state.fitFreeText[q.id]||''}" oninput="fitSetOtherText('${q.id}',this.value)"></div><div class="opts-multi">`;
+        }
+      });
+      h+=`</div>`;
+      // Also store numeric value for "other" when toggled
+      h+=`<button class="btn-next" onclick="fitNextQ()" ${!answered?'disabled':''}>`;
+      h+=state.fitQ>=FIT_QS.length-1?'See Results →':'Next →';
+      h+=`</button>`;
+    } else {
+      // Single select
+      // Check if any option has freetext
+      const hasOther=q.opts.some(o=>o.freetext);
+      const otherSelected=state.fitAns[q.id]==='other';
+
+      h+=`<div class="opts">`;
+      q.opts.forEach(o=>{
+        if(o.freetext){
+          // "Other" option — clicking selects it but doesn't advance
+          h+=`<button class="opt ${otherSelected?'sel':''}" onclick="fitSelectOther('${q.id}')">${o.l}</button>`;
+          if(otherSelected){
+            h+=`<input class="freetext-input" type="text" placeholder="Please specify..." value="${state.fitFreeText[q.id]||''}" oninput="fitSetOtherText('${q.id}',this.value)" style="margin-top:4px">`;
+          }
+        } else {
+          // Normal option — auto-advance on click (unless "Other" is also present, then use Next button)
+          const sel=state.fitAns[q.id]===o.v;
+          if(hasOther){
+            h+=`<button class="opt ${sel?'sel':''}" onclick="fitSelectSingle('${q.id}',${o.v})">${o.l}</button>`;
+          } else {
+            h+=`<button class="opt ${sel?'sel':''}" onclick="fitSelect(${o.v})">${o.l}</button>`;
+          }
+        }
+      });
+      h+=`</div>`;
+
+      // If question has an Other option, show Next button (don't auto-advance)
+      if(hasOther){
+        const answered=state.fitAns[q.id]!==undefined&&state.fitAns[q.id]!==null;
+        h+=`<button class="btn-next" onclick="fitNextQ()" ${!answered?'disabled':''}>`;
+        h+=state.fitQ>=FIT_QS.length-1?'See Results →':'Next →';
+        h+=`</button>`;
+      }
+    }
+
+    if(state.fitQ>0)h+=`<button class="btn-back" onclick="fitBack()">← Back</button>`;
+  }
+  h+=`</div>`;return h;
+}
+
+// ─── MODEL TAB ──────────────────────────────────────────────
+function renderModel(){
+  const p=PROFILES[state.profile];const pf=isPrefill();
+  let h=`<div class="fade"><h2 class="section">${pf?"Operating Model: "+p.name:"How it works — the retailer operating model"}</h2><p class="section-desc">${pf?"Recommended operating model with mutual obligations for each element.":"Configure the model that fits your business."}</p>`;
+  if(pf||state.modelDone){
+    h+=`<div class="result-box" style="background:var(--sage-l);border:1px solid var(--sage)33;padding:28px 28px 12px"><div style="font-family:var(--fh);font-size:26px;margin-bottom:8px">Recommended Operating Model</div><p style="font-size:14px;color:var(--gray);line-height:1.6;margin-bottom:16px">Each element includes mutual obligations — what Lilo commits to and what the retailer is accountable for during the pilot.</p></div>`;
+    const keys=["listing_ownership","pricing_approach","stock_frequency","brand_visibility"];
+    keys.forEach(k=>{
+      const val=state.modelAns[k];if(!val)return;
+      const info=MODEL_INFO[k][val];if(!info)return;
+      const note=pf&&p.modelNotes?p.modelNotes[k]:null;
+      h+=`<div class="model-card"><div class="icon-label"><span class="icon">${MODEL_ICONS[k]}</span><span class="lbl">${MODEL_NAMES[k]}</span></div><h4>${info.t}</h4><p>${info.d}</p>`;
+      if(note)h+=`<p class="note" style="margin-top:0;margin-bottom:14px">${note}</p>`;
+      // Mutual obligations
+      h+=`<div class="oblig"><div class="oblig-col lilo"><h5>Lilo Commits To</h5><ul>${info.lilo.map(i=>`<li>${i}</li>`).join("")}</ul></div><div class="oblig-col retailer"><h5>Retailer Commits To</h5><ul>${info.ret.map(i=>`<li>${i}</li>`).join("")}</ul></div></div>`;
+      h+=`</div>`;
+    });
+    h+=`<p class="note">This model is a recommended starting point informed by Lilo's pilot framework. All elements are negotiable during partnership onboarding.</p>`;
+    h+=`<button class="btn" onclick="setTab('value')">Continue to Commercial Value →</button>`;
+  } else {
+    const q=MODEL_QS[state.modelQ];
+    h+=`<div class="progress">${MODEL_QS.map((_,i)=>`<span class="${i<=state.modelQ?"done":""}"></span>`).join("")}</div>`;
+    h+=`<div class="q-label">Configuration ${state.modelQ+1} of ${MODEL_QS.length}</div>`;
+    h+=`<div class="q-title">${q.q}</div>`;
+    h+=`<div class="opts">${q.opts.map(o=>`<button class="opt ${state.modelAns[q.id]===o.m?"sel":""}" onclick="modelSelect('${o.m}')"><div style="font-weight:600;margin-bottom:4px">${o.l}</div><div class="opt-desc">${o.d}</div></button>`).join("")}</div>`;
+    if(state.modelQ>0)h+=`<button class="btn-back" onclick="modelBack()">← Back</button>`;
+  }
+  h+=`</div>`;return h;
+}
+
+function modelSelect(m){
+  const q=MODEL_QS[state.modelQ];state.modelAns[q.id]=m;
+  if(state.modelQ>=MODEL_QS.length-1)state.modelDone=true;
+  else state.modelQ++;
+  render();
+}
+function modelBack(){if(state.modelQ>0){state.modelQ--;render()}}
+
+// ─── VALUE TAB ──────────────────────────────────────────────
+function renderValue(){
+  const p=PROFILES[state.profile];const pf=isPrefill();const ci=state.calcInputs;
+  const liloRec=48,liloComm=25,liloWks=3;
+  const curRev=ci.monthlyUnits*ci.avgRRP*(ci.currentRecovery/100);
+  const liloGross=ci.monthlyUnits*ci.avgRRP*(liloRec/100);
+  const liloNet=liloGross*(1-liloComm/100);
+  const annUp=(liloNet-curRev)*12;
+  const curWH=ci.monthlyUnits*ci.warehouseCostPerUnit*(ci.avgWeeksInWarehouse/4);
+  const liloWHc=ci.monthlyUnits*ci.warehouseCostPerUnit*(liloWks/4);
+  const annWH=(curWH-liloWHc)*12;
+  const total=annUp+annWH;
+  const barPct=Math.min(curRev/Math.max(liloNet,1)*100,100);
+
+  let h=`<div class="fade"><h2 class="section">Commercial Value Estimator${pf?" — "+p.name:""}</h2><p class="section-desc">${pf?"Estimated financial impact based on this partner's profile. Adjust sliders to refine.":"Model the financial impact of partnering with Lilo. Adjust the inputs below or upload a stock file to auto-calculate average item value."}</p>`;
+
+  // ── XLS Upload Section ──
+  h+=`<div class="card" style="margin-bottom:24px">
+    <div class="label">Import Stock Data from Excel / CSV</div>
+    <p style="font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:16px">Upload your stock file and we'll calculate the average item RRP and monthly unit count automatically. Expected columns: <strong>RRP</strong> (or Price / Value) and optionally <strong>Quantity</strong>.</p>
+    <div id="upload-zone" style="border:2px dashed var(--div);border-radius:10px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;background:var(--sand)" ondragover="event.preventDefault();this.style.borderColor='var(--sage)'" ondragleave="this.style.borderColor='var(--div)'" ondrop="handleFileDrop(event)">
+      <div style="font-size:28px;margin-bottom:8px">📂</div>
+      <div style="font-size:14px;font-weight:600;color:var(--charcoal);margin-bottom:4px">Drop your Excel or CSV file here</div>
+      <div style="font-size:12px;color:var(--gray);margin-bottom:16px">Supports .xlsx, .xls, .csv</div>
+      <label style="display:inline-block;padding:10px 24px;background:var(--sage);color:#fff;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">
+        Browse File
+        <input type="file" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFileSelect(this)">
+      </label>
+    </div>
+    <div id="upload-result" style="display:none;margin-top:16px;padding:16px 20px;background:var(--sage-l);border-radius:8px;border:1px solid var(--sage)33">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">Calculated from file</div>
+          <div id="upload-summary" style="font-size:14px;font-weight:600;color:var(--charcoal)"></div>
+        </div>
+        <button onclick="applyUploadData()" style="padding:10px 20px;background:var(--sage);color:#fff;border:none;border-radius:6px;font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer">Apply to Calculator ↓</button>
+      </div>
+    </div>
+  </div>`;
+
+  // ── Sliders ──
+  h+=`<div class="calc-header" style="background:var(--terra-l);border:1px solid var(--terra)33;border-radius:10px;padding:20px 24px;margin-bottom:20px"><p style="font-size:14px;color:var(--gray);margin:0">Adjust inputs to reflect your business. Estimates update in real-time.</p></div>`;
+  const sliders=[{k:"avgRRP",l:"Average item RRP",min:200,max:5000,step:50,f:v=>fmt(v)},{k:"monthlyUnits",l:"Monthly units available",min:5,max:200,step:5,f:v=>v+" units"},{k:"currentRecovery",l:"Current recovery (% of RRP)",min:5,max:60,step:5,f:v=>v+"%"},{k:"warehouseCostPerUnit",l:"Warehouse cost/unit/week",min:10,max:100,step:5,f:v=>fmt(v)},{k:"avgWeeksInWarehouse",l:"Avg weeks in warehouse",min:1,max:16,step:1,f:v=>v+" weeks"}];
+  h+=`<div class="sliders">${sliders.map(s=>`<div class="slider-card"><div class="s-label">${s.l}</div><div class="s-val">${s.f(ci[s.k])}</div><input type="range" min="${s.min}" max="${s.max}" step="${s.step}" value="${ci[s.k]}" oninput="updateCalc('${s.k}',this.value)"></div>`).join("")}</div>`;
+
+  // ── Impact ──
+  h+=`<div class="impact-box"><div class="label" style="color:var(--highlight)">Estimated Annual Impact</div><div class="impact-grid"><div><div class="impact-num">${fmt(annUp)}</div><div class="impact-label">Margin recovery uplift</div></div><div><div class="impact-num">${fmt(annWH)}</div><div class="impact-label">Warehouse cost saving</div></div><div><div class="impact-num" style="color:${total>0?"var(--highlight)":"var(--terra)"}">${fmt(total)}</div><div class="impact-label">Total annual benefit</div></div></div>`;
+  h+=`<div class="compare-row" style="color:rgba(255,255,255,.6)"><span>Current approach</span><span>${fmt(curRev)}/mo</span></div><div class="compare-bar"><div class="compare-bar-inner" style="width:${barPct}%;background:rgba(255,255,255,.3)"></div></div>`;
+  h+=`<div class="compare-row" style="color:var(--highlight)"><span>Via Lilo (net of commission)</span><span>${fmt(liloNet)}/mo</span></div><div class="compare-bar"><div class="compare-bar-inner" style="width:100%;background:linear-gradient(90deg,var(--highlight),rgba(17,255,255,.5))"></div></div></div>`;
+
+  // ── KPIs ──
+  h+=`<div class="kpi-section"><div class="label">Pilot Success Metrics</div><p style="font-size:13px;color:var(--gray);margin-bottom:16px;line-height:1.6">These KPIs would be tracked during a pilot to evaluate performance against commercial and operational benchmarks.</p>`;
+  const kpis=[
+    {name:"Net Recovery Rate",target:"≥ "+liloRec+"% of RRP",desc:"Average resale price achieved as % of original RRP, net of condition adjustments"},
+    {name:"Sell-Through Velocity",target:"≤ "+liloWks+" weeks",desc:"Average time from listing to sale. Faster = lower holding costs"},
+    {name:"Listing Conversion Rate",target:"≥ 70%",desc:"% of listed items that result in a completed sale"},
+    {name:"Stock Rejection Rate",target:"≤ 10%",desc:"% of stock received that cannot be listed due to condition"},
+    {name:"Cost-to-Serve Ratio",target:"≤ 30%",desc:"Lilo's operational cost as % of resale revenue per partner"},
+    {name:"Partner Margin Recovery",target:"≥ "+fmt(liloNet)+"/mo",desc:"Net monthly revenue returned to partner after commission"},
+    {name:"Customer Satisfaction",target:"≥ 4.5/5",desc:"Buyer satisfaction rating for items from this partner"},
+    {name:"Operational Friction Score",target:"≤ 2/5",desc:"Internal assessment of process friction during pilot"}
+  ];
+  h+=`<div class="kpi-grid">${kpis.map(k=>`<div class="kpi-item"><div class="kpi-name">${k.name}</div><div class="kpi-target">${k.target}</div><div class="kpi-desc">${k.desc}</div></div>`).join("")}</div></div>`;
+
+  // ── Scale triggers ──
+  h+=`<div class="scale-triggers"><h4>Pilot-to-Scale Decision Criteria</h4><p style="font-size:13px;color:var(--gray);margin-bottom:16px;line-height:1.6">The following thresholds must be met over a 12-week pilot period to trigger a scale conversation.</p>`;
+  const triggers=["Recovery rate consistently ≥ "+(liloRec-5)+"% of RRP across 8+ weeks","Sell-through velocity ≤ "+(liloWks+1)+" weeks on average","Minimum "+Math.round(ci.monthlyUnits*0.7)+" units sold per month (70% of available stock)","Listing conversion rate ≥ 65%","Stock rejection rate ≤ 15%","No unresolved operational escalations for 4+ consecutive weeks","Positive net margin for Lilo after cost-to-serve","Partner confirms willingness to increase volume by ≥ 50%"];
+  h+=triggers.map(t=>`<div class="trigger-item"><div class="trigger-check">✓</div><span>${t}</span></div>`).join("");
+  h+=`<p class="note" style="margin-top:16px">If ≥ 6 of 8 criteria are met, pilot progresses to scale discussion. If 4–5 met, pilot extends with targeted improvements. If < 4 met, pilot is reviewed for viability.</p></div>`;
+
+  // ── Assumptions ──
+  h+=`<div class="assumptions"><div class="label">Assumptions (replace with actuals)</div><div class="assumptions-grid"><div><span>Lilo avg recovery: </span>${liloRec}% of RRP</div><div><span>Lilo commission: </span>${liloComm}%</div><div><span>Avg sell-through: </span>${liloWks} weeks</div></div></div>`;
+  h+=`<p class="note">Estimates are indicative. Framework informed by Lilo's Freedom pilot post-implementation review. Replace assumptions with actual performance data.</p>`;
+  h+=`<button class="btn" onclick="setTab('summary')">View Summary Pack →</button>`;
+  h+=`</div>`;return h;
+}
+
+function updateCalc(k,v){state.calcInputs[k]=Number(v);renderContent();}
+
+// ── XLS/CSV Upload Handlers ──
+let _pendingUpload={avgRRP:null,monthlyUnits:null};
+
+function handleFileDrop(e){
+  e.preventDefault();
+  document.getElementById('upload-zone').style.borderColor='var(--div)';
+  const file=e.dataTransfer.files[0];
+  if(file) processStockFile(file);
+}
+
+function handleFileSelect(input){
+  const file=input.files[0];
+  if(file) processStockFile(file);
+}
+
+function processStockFile(file){
+  const resultEl=document.getElementById('upload-result');
+  const summaryEl=document.getElementById('upload-summary');
+  resultEl.style.display='none';
+
+  const ext=file.name.split('.').pop().toLowerCase();
+
+  if(ext==='csv'){
+    const reader=new FileReader();
+    reader.onload=function(e){
+      const text=e.target.result;
+      parseCSVAndApply(text,file.name,summaryEl,resultEl);
+    };
+    reader.readAsText(file);
+  } else if(ext==='xlsx'||ext==='xls'){
+    // Use SheetJS loaded from CDN
+    const script=document.getElementById('sheetjs-script');
+    if(!script){
+      const s=document.createElement('script');
+      s.id='sheetjs-script';
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+      s.onload=()=>readXLSX(file,summaryEl,resultEl);
+      document.head.appendChild(s);
+    } else {
+      readXLSX(file,summaryEl,resultEl);
+    }
+  } else {
+    alert('Please upload a .xlsx, .xls, or .csv file.');
+  }
+}
+
+function readXLSX(file,summaryEl,resultEl){
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const data=new Uint8Array(e.target.result);
+    const wb=XLSX.read(data,{type:'array'});
+    const ws=wb.Sheets[wb.SheetNames[0]];
+    const rows=XLSX.utils.sheet_to_json(ws,{defval:''});
+    extractStockData(rows,file.name,summaryEl,resultEl);
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function parseCSVAndApply(text,fname,summaryEl,resultEl){
+  const lines=text.trim().split('\n');
+  const headers=lines[0].split(',').map(h=>h.trim().replace(/"/g,'').toLowerCase());
+  const rows=lines.slice(1).map(line=>{
+    const vals=line.split(',').map(v=>v.trim().replace(/"/g,''));
+    const obj={};
+    headers.forEach((h,i)=>obj[h]=vals[i]||'');
+    return obj;
+  });
+  extractStockData(rows,fname,summaryEl,resultEl);
+}
+
+function extractStockData(rows,fname,summaryEl,resultEl){
+  // Find RRP column — try common names
+  const rrpKeys=['rrp','price','value','sell price','selling price','retail price','amount','cost','unit price'];
+  const qtyKeys=['quantity','qty','units','count','stock','volume'];
+
+  const allKeys=Object.keys(rows[0]||{}).map(k=>k.toLowerCase());
+  const rrpKey=allKeys.find(k=>rrpKeys.some(r=>k.includes(r)))||allKeys[0];
+  const qtyKey=allKeys.find(k=>qtyKeys.some(q=>k.includes(q)));
+
+  const originalKeys=Object.keys(rows[0]||{});
+  const rrpOrigKey=originalKeys.find(k=>k.toLowerCase()===rrpKey)||originalKeys[0];
+  const qtyOrigKey=qtyKey?originalKeys.find(k=>k.toLowerCase()===qtyKey):null;
+
+  const prices=rows.map(r=>{
+    const raw=String(r[rrpOrigKey]||'').replace(/[$,\s]/g,'');
+    return parseFloat(raw)||0;
+  }).filter(v=>v>0);
+
+  let totalUnits=0;
+  if(qtyOrigKey){
+    totalUnits=rows.reduce((s,r)=>{
+      const q=parseInt(String(r[qtyOrigKey]||'').replace(/[^0-9]/g,''))||0;
+      return s+q;
+    },0);
+  } else {
+    totalUnits=prices.length;
+  }
+
+  if(prices.length===0){
+    summaryEl.textContent='Could not find price data. Check column names include "RRP", "Price", or "Value".';
+    resultEl.style.background='var(--terra-l)';
+    resultEl.style.display='block';
+    return;
+  }
+
+  const avgRRP=Math.round(prices.reduce((a,b)=>a+b,0)/prices.length);
+  const monthlyUnits=Math.min(Math.round(totalUnits/3),200); // assume 3-month period, cap at 200
+
+  _pendingUpload={avgRRP,monthlyUnits};
+  summaryEl.innerHTML=`<span style="color:var(--sage)">✓</span> <strong>${prices.length} items</strong> found in <em>${fname}</em> — Average RRP: <strong>${fmt(avgRRP)}</strong> · Est. monthly units: <strong>${monthlyUnits}</strong>`;
+  resultEl.style.background='var(--sage-l)';
+  resultEl.style.display='block';
+}
+
+function applyUploadData(){
+  if(_pendingUpload.avgRRP){
+    state.calcInputs.avgRRP=_pendingUpload.avgRRP;
+    state.calcInputs.monthlyUnits=_pendingUpload.monthlyUnits||state.calcInputs.monthlyUnits;
+    renderContent();
+  }
+}
+
+// ─── SUMMARY TAB ──────────────────────────────────────────────
+function renderSummary(){
+  const p=PROFILES[state.profile];const pf=isPrefill();const ci=state.calcInputs;
+  const{score,max}=calcScore(state.fitAns);const pct=Math.round(score/max*100);const tier=getTier(score,max);
+  const liloRec=48,liloComm=25,liloWks=3;
+  const curRev=ci.monthlyUnits*ci.avgRRP*(ci.currentRecovery/100);
+  const liloNet=ci.monthlyUnits*ci.avgRRP*(liloRec/100)*(1-liloComm/100);
+  const annUp=(liloNet-curRev)*12;
+  const curWH=ci.monthlyUnits*ci.warehouseCostPerUnit*(ci.avgWeeksInWarehouse/4);
+  const liloWHc=ci.monthlyUnits*ci.warehouseCostPerUnit*(liloWks/4);
+  const total=(liloNet-curRev)*12+(curWH-liloWHc)*12;
+
+  const modelSummary=Object.keys(MODEL_NAMES).map(k=>{
+    const val=state.modelAns[k];if(!val||!MODEL_INFO[k][val])return"";
+    return MODEL_INFO[k][val].t;
+  }).filter(Boolean);
+
+  let h=`<div class="fade"><h2 class="section">${pf?p.name+" — ":""}Retailer Decision Pack</h2><p class="section-desc">A summary of the partnership assessment, recommended model, and commercial case. This pack is designed to support internal alignment and scale discussions.</p>`;
+
+  h+=`<div class="summary-section"><h3>Partnership Summary</h3><div class="summary-grid">`;
+  h+=`<div class="summary-block"><div class="sb-label">Partner Fit</div><div class="sb-value" style="color:${tier.color}">${tier.tier}</div><div class="sb-detail">Fit score: ${pct}% — ${tier.sum.split(".")[0]}.</div></div>`;
+  h+=`<div class="summary-block"><div class="sb-label">Est. Annual Benefit</div><div class="sb-value" style="color:var(--sage-m)">${fmt(total)}</div><div class="sb-detail">Margin uplift ${fmt(annUp)} + warehouse saving ${fmt((curWH-liloWHc)*12)}</div></div>`;
+  h+=`<div class="summary-block"><div class="sb-label">Operating Model</div><div class="sb-value" style="font-size:16px">${modelSummary.slice(0,2).join(" + ")}</div><div class="sb-detail">${modelSummary.slice(2).join(" · ")}</div></div>`;
+  h+=`<div class="summary-block"><div class="sb-label">Scale Pathway</div><div class="sb-value" style="font-size:16px">12-Week Pilot</div><div class="sb-detail">${Math.round(ci.monthlyUnits*0.7)}+ units/month target · ${liloWks}-week sell-through · 6/8 criteria to scale</div></div>`;
+  h+=`</div></div>`;
+
+  // Key commercial metrics
+  h+=`<div class="card" style="margin-top:24px"><div class="label">Key Commercial Metrics</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">`;
+  const metrics=[
+    {l:"Monthly Revenue (Current)",v:fmt(curRev)},
+    {l:"Monthly Revenue (Lilo)",v:fmt(liloNet)},
+    {l:"Monthly Uplift",v:fmt(liloNet-curRev)},
+    {l:"Annual Total Benefit",v:fmt(total)},
+  ];
+  metrics.forEach(m=>{h+=`<div><div style="font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">${m.l}</div><div style="font-family:var(--fh);font-size:22px">${m.v}</div></div>`});
+  h+=`</div></div>`;
+
+  // Mutual obligations summary
+  h+=`<div class="card" style="margin-top:8px"><div class="label">Mutual Accountability Summary</div>`;
+  const keys=["listing_ownership","pricing_approach"];
+  keys.forEach(k=>{
+    const val=state.modelAns[k];if(!val||!MODEL_INFO[k][val])return;
+    const info=MODEL_INFO[k][val];
+    h+=`<div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--div)"><div style="font-weight:600;font-size:13px;margin-bottom:8px">${MODEL_ICONS[k]} ${MODEL_NAMES[k]}: ${info.t}</div><div class="oblig" style="margin-top:0;padding-top:0;border-top:none"><div class="oblig-col lilo"><h5>Lilo</h5><ul>${info.lilo.slice(0,2).map(i=>`<li>${i}</li>`).join("")}</ul></div><div class="oblig-col retailer"><h5>Retailer</h5><ul>${info.ret.slice(0,2).map(i=>`<li>${i}</li>`).join("")}</ul></div></div></div>`;
+  });
+  h+=`</div>`;
+
+  // Decision gates
+  h+=`<div class="card" style="margin-top:8px"><div class="label">Decision Gates</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">`;
+  const gates=[
+    {wk:"Week 4",title:"Go / No-Go",desc:"Operational feasibility confirmed. Stock pipeline established. First listings live."},
+    {wk:"Week 8",title:"Mid-Pilot Review",desc:"KPIs trending positively. Operational friction reducing. Volume targets on track."},
+    {wk:"Week 12",title:"Scale Decision",desc:"6/8 scale criteria met → progress to program. 4-5 → extend pilot. <4 → review viability."},
+  ];
+  gates.forEach(g=>{h+=`<div style="padding:16px;background:var(--sage-l);border-radius:8px"><div style="font-size:11px;color:var(--sage);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:4px">${g.wk}</div><div style="font-family:var(--fh);font-size:17px;margin-bottom:6px">${g.title}</div><div style="font-size:12px;color:var(--gray);line-height:1.5">${g.desc}</div></div>`});
+  h+=`</div></div>`;
+
+  // ─── RISKS & ASSUMPTIONS (Dynamic) ─────────────────────
+  h+=`<div class="card" style="margin-top:8px"><div class="label">Risks & Assumptions Log</div>`;
+  h+=`<p style="font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:20px">Dynamically generated based on this partner's profile. These should be monitored during discovery and validated through pilot execution to improve learning over time.</p>`;
+
+  // Generate dynamic risks based on fit answers and model choices
+  const risks = [];
+  const assumptions = [];
+  const fa = state.fitAns;
+  const ma = state.modelAns;
+
+  // Volume risks
+  if(fa.stock_volume<=2) risks.push({level:"high",risk:"Low stock volume",detail:"Partnership economics are volume-sensitive. Below 30 units/month may not justify Lilo's operational setup costs.",mitigation:"Start with focused pilot on highest-value category. Set minimum volume thresholds before scaling.",validate:"Track actual vs forecast volume monthly. Review at Week 4 gate."});
+  if(fa.stock_volume>=3) risks.push({level:"low",risk:"Pipeline consistency",detail:"High volume is positive but depends on consistent flow. Disruptions to stock pipeline reduce Lilo's capacity to maintain buyer demand.",mitigation:"Establish agreed stock schedule with minimum commitments. Build buffer inventory on platform.",validate:"Monitor weekly stock flow vs commitment. Flag gaps >2 weeks."});
+
+  // Brand risks
+  if(fa.brand_position>=3) risks.push({level:"med",risk:"Brand dilution in resale channel",detail:"Premium brands entering resale must manage pricing perception carefully. Poorly priced resale stock can undermine full-price sales.",mitigation:"Floor pricing governance. Branded page with quality presentation standards. Monitor cross-channel price perception.",validate:"Track full-price sales trends during pilot. Survey brand perception quarterly."});
+  if(fa.brand_position<=2) risks.push({level:"low",risk:"Low resale value retention",detail:"Value/mass market brands retain less resale value, compressing margins for both parties.",mitigation:"Focus on items with strongest condition and demand. Volume offsets lower per-unit margin.",validate:"Track actual recovery rate vs assumptions weekly."});
+
+  // Geography risks
+  if(fa.geography<=2) risks.push({level:"high",risk:"Geographic misalignment",detail:"Lilo's delivery network is SEQ-focused. Interstate or regional partners face higher logistics costs and longer delivery times.",mitigation:"Start with pickup-only model. Assess demand before investing in delivery expansion.",validate:"Pilot with pickup model. Measure buyer demand by postcode."});
+
+  // Markdown approach risks
+  if(fa.current_markdown>=3) risks.push({level:"med",risk:"Internal channel conflict",detail:"Shifting stock from existing clearance channels to Lilo may face internal resistance from teams managing current processes.",mitigation:"Clear internal communication. Demonstrate Lilo as complementary, not replacement. Engage store/ops teams early.",validate:"Stakeholder sentiment check at Week 4 and Week 8 gates."});
+
+  // Model-specific risks
+  if(ma.pricing_approach==="lilo_led") risks.push({level:"low",risk:"Pricing control concern",detail:"Retailer cedes pricing control to Lilo. If recovery rates disappoint, trust erodes quickly.",mitigation:"Transparent pricing dashboard. Weekly reporting on pricing decisions and outcomes. Agreed review triggers.",validate:"Track recovery vs target weekly. Trigger review if <80% of target for 3 consecutive weeks."});
+  if(ma.pricing_approach==="floor_price") risks.push({level:"low",risk:"Floor price set too high",detail:"If floor prices are set above market, sell-through slows and stock accumulates on platform.",mitigation:"Benchmark floors against resale market data. Build in quarterly floor price reviews.",validate:"Monitor sell-through rate by price band. Adjust floors if time-to-sale exceeds 6 weeks."});
+
+  if(ma.logistics==="lilo_collects") risks.push({level:"med",risk:"Collection logistics cost",detail:"Lilo collection model adds logistics cost. Must be absorbed in commission or charged separately.",mitigation:"Model logistics cost per collection. Batch collections to reduce per-unit cost. Build into commission structure.",validate:"Track cost-per-unit-collected. Ensure margin remains positive after logistics."});
+
+  if(ma.brand_visibility==="branded") risks.push({level:"med",risk:"Resale channel cannibalisation",detail:"Branded resale presence may attract buyers who would have purchased full-price, particularly during sale periods.",mitigation:"Monitor buyer demographics. Differentiate stock (ex-display only, not current range). Timing controls around retail sales.",validate:"Compare Lilo buyer profiles vs retail customer profiles. Track any correlation with full-price sales dips."});
+
+  // Universal assumptions
+  assumptions.push({assumption:"Lilo average recovery rate of "+48+"% of RRP",status:"unvalidated",source:"Estimate based on comparable resale platforms. Needs validation from Freedom pilot data.",action:"Replace with actual 90-day average from Freedom pilot. Review quarterly."});
+  assumptions.push({assumption:"Lilo commission rate of "+25+"%",status:"placeholder",source:"Placeholder for modelling. Actual rate subject to negotiation per partner.",action:"Confirm commercial terms. May vary by service level (full-service vs hybrid vs self-service)."});
+  assumptions.push({assumption:"Average sell-through time of 3 weeks",status:"unvalidated",source:"Estimate. Actual sell-through varies significantly by product category and price point.",action:"Track by category from pilot Week 1. Segment reporting by product type."});
+  assumptions.push({assumption:"Warehouse cost per unit is retailer-supplied",status:"input",source:"Retailer to confirm. Should include proportional lease, handling, insurance, depreciation.",action:"Validate with retailer finance team during discovery."});
+  assumptions.push({assumption:"KPI thresholds are achievable at pilot scale",status:"assumption",source:"Thresholds set based on industry benchmarks and pilot framework design.",action:"Review thresholds at Week 4 gate. Adjust if market conditions warrant."});
+
+  // Render risks
+  h+=`<div style="margin-bottom:24px"><div style="font-size:13px;font-weight:600;margin-bottom:12px">Partner-Specific Risks</div>`;
+  risks.forEach(r=>{
+    const col = r.level==="high"?"var(--terra)":r.level==="med"?"#D4A843":"var(--sage)";
+    const bg = r.level==="high"?"rgba(196,114,78,0.08)":r.level==="med"?"rgba(212,168,67,0.08)":"rgba(122,139,111,0.08)";
+    const badge = r.level==="high"?"HIGH":r.level==="med"?"MEDIUM":"LOW";
+    h+=`<div style="margin-bottom:12px;padding:16px;background:${bg};border-radius:8px;border-left:3px solid ${col}">`;
+    h+=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:14px;font-weight:600">${r.risk}</span><span style="font-size:9px;padding:3px 8px;border-radius:4px;background:${col};color:#fff;font-weight:700;letter-spacing:0.06em">${badge}</span></div>`;
+    h+=`<div style="font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:8px">${r.detail}</div>`;
+    h+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px">`;
+    h+=`<div><span style="font-weight:600;color:var(--charcoal)">Mitigation: </span><span style="color:var(--gray)">${r.mitigation}</span></div>`;
+    h+=`<div><span style="font-weight:600;color:var(--charcoal)">Validate: </span><span style="color:var(--gray)">${r.validate}</span></div>`;
+    h+=`</div></div>`;
+  });
+  h+=`</div>`;
+
+  // Render assumptions
+  h+=`<div><div style="font-size:13px;font-weight:600;margin-bottom:12px">Key Assumptions</div>`;
+  h+=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">`;
+  h+=`<tr style="border-bottom:2px solid var(--div)"><th style="text-align:left;padding:8px 12px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;font-size:10px">Assumption</th><th style="text-align:left;padding:8px 12px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;font-size:10px">Status</th><th style="text-align:left;padding:8px 12px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;font-size:10px">Action to Validate</th></tr>`;
+  assumptions.forEach(a=>{
+    const statusCol = a.status==="unvalidated"?"var(--terra)":a.status==="placeholder"?"#D4A843":"var(--sage)";
+    h+=`<tr style="border-bottom:1px solid var(--div)"><td style="padding:10px 12px;line-height:1.5">${a.assumption}</td><td style="padding:10px 12px"><span style="font-size:10px;padding:2px 8px;border-radius:4px;background:${statusCol}22;color:${statusCol};font-weight:600;text-transform:uppercase;letter-spacing:0.04em">${a.status}</span></td><td style="padding:10px 12px;color:var(--gray);line-height:1.5">${a.action}</td></tr>`;
+  });
+  h+=`</table></div></div>`;
+
+  h+=`<p style="font-size:11px;color:var(--gray);margin-top:16px;line-height:1.6;font-style:italic">This log should be reviewed at each decision gate (Week 4, 8, 12). As assumptions are validated with real data, update the tool's configuration to improve accuracy for future partner assessments.</p>`;
+  h+=`</div>`;
+
+  h+=`<p class="note" style="margin-top:24px">This decision pack is generated from Lilo Living's retailer partnership framework, informed by the Freedom pilot post-implementation review. All figures are estimates based on the inputs provided. This is not a binding offer — terms are finalised during partnership onboarding.</p>`;
+
+  h+=`</div>`;return h;
+}
+
+// ─── LILO ECONOMICS TAB (Internal) ──────────────────────────────
+function updateEcon(k,v){state.econInputs[k]=Number(v);renderContent();}
+
+function renderEcon(){
+  const p=PROFILES[state.profile];const pf=isPrefill();
+  const ci=state.calcInputs;const ei=state.econInputs;
+  const liloRec=48,liloComm=25,liloWks=3;
+
+  // Revenue per unit
+  const salePrice=ci.avgRRP*(liloRec/100);
+  const commissionPerUnit=salePrice*(liloComm/100);
+
+  // Costs per unit
+  const labourRate=35; // $/hr for listing work
+  const listingLabour=(ei.listingMins/60)*labourRate;
+  const csLabour=(ei.csMinPerUnit/60)*labourRate;
+  const platformCost=salePrice*(ei.platformPctOverhead/100);
+  const totalCostPerUnit=ei.pickupCost+ei.photoCost+listingLabour+ei.deliveryCost+platformCost+csLabour;
+
+  // Contribution per unit
+  const contribPerUnit=commissionPerUnit-totalCostPerUnit;
+  const contribMarginPct=commissionPerUnit>0?Math.round(contribPerUnit/commissionPerUnit*100):0;
+
+  // Monthly & annual
+  const monthlyUnits=ci.monthlyUnits;
+  const monthlyRevenue=commissionPerUnit*monthlyUnits;
+  const monthlyCost=totalCostPerUnit*monthlyUnits;
+  const monthlyContrib=contribPerUnit*monthlyUnits;
+  const annualContrib=monthlyContrib*12;
+
+  // Breakeven
+  const fixedMonthlyCost=0; // Could add partner-specific fixed costs later
+  const breakevenUnits=contribPerUnit>0?Math.ceil(totalCostPerUnit*monthlyUnits/(commissionPerUnit)):999;
+  const breakevenActual=contribPerUnit>0?Math.ceil(monthlyCost/commissionPerUnit):999;
+
+  // Sensitivity scenarios
+  const scenarioLow={rec:38,comm:20,units:Math.round(monthlyUnits*0.6)};
+  const scenarioMid={rec:liloRec,comm:liloComm,units:monthlyUnits};
+  const scenarioHigh={rec:55,comm:30,units:Math.round(monthlyUnits*1.3)};
+  function scenarioContrib(s){
+    const sp=ci.avgRRP*(s.rec/100);const cm=sp*(s.comm/100);
+    const pc=sp*(ei.platformPctOverhead/100);
+    const tc=ei.pickupCost+ei.photoCost+listingLabour+ei.deliveryCost+pc+csLabour;
+    return (cm-tc)*s.units*12;
+  }
+
+  // Verdict
+  let verdictIcon,verdictTitle,verdictDesc,verdictBg,verdictBorder;
+  if(contribMarginPct>=30){verdictIcon="✅";verdictTitle="Profitable Partnership";verdictDesc="Strong unit economics. Lilo earns a healthy margin after all operational costs. This partnership is commercially sustainable at current volumes.";verdictBg="var(--sage-l)";verdictBorder="var(--sage)";}
+  else if(contribMarginPct>=10){verdictIcon="⚠️";verdictTitle="Marginal — Volume Dependent";verdictDesc="Positive but thin margins. Profitability depends on maintaining volume and controlling logistics costs. Monitor cost-to-serve closely during pilot.";verdictBg="var(--terra-l)";verdictBorder="var(--terra)";}
+  else if(contribMarginPct>0){verdictIcon="🔶";verdictTitle="Breakeven Risk";verdictDesc="Very slim margins. Small cost increases or volume drops could push this partnership negative. Consider renegotiating commission or reducing service level.";verdictBg="#FFF3E0";verdictBorder="#E6A817";}
+  else{verdictIcon="🚫";verdictTitle="Unprofitable at Current Terms";verdictDesc="Lilo loses money on each unit at these cost assumptions. Either reduce operational costs, increase commission, or decline this partnership configuration.";verdictBg="#FDEBEB";verdictBorder="#C4724E";}
+
+  // Max bar width reference for waterfall
+  const maxCost=Math.max(ei.pickupCost,ei.photoCost,listingLabour,ei.deliveryCost,platformCost,csLabour,1);
+
+  let h=`<div class="fade">`;
+  h+=`<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><h2 class="section">${pf?"Lilo Economics: "+p.name:"Lilo Unit Economics"}</h2></div><div class="internal-badge">🔐 Internal Only</div></div>`;
+  h+=`<p class="section-desc">This module models <strong>Lilo's own profitability</strong> per partnership — not the retailer's. It answers: does Lilo make or lose money servicing this partner at these terms?</p>`;
+
+  // Cost input sliders
+  h+=`<div class="card"><div class="label">Lilo Cost Inputs (per unit)</div>`;
+  h+=`<p style="font-size:12px;color:var(--gray);margin-bottom:16px;line-height:1.5">Adjust to reflect Lilo's actual or estimated operational costs. These feed directly into the contribution margin calculation below.</p>`;
+  const econSliders=[
+    {k:"pickupCost",l:"Pickup / Collection",min:0,max:200,step:5,f:v=>fmt(v),tip:"Cost to collect item from retailer location"},
+    {k:"photoCost",l:"Photography",min:0,max:80,step:5,f:v=>fmt(v),tip:"Per-item photography cost"},
+    {k:"listingMins",l:"Listing Time (mins)",min:5,max:60,step:5,f:v=>v+" min",tip:"Staff time to create listing"},
+    {k:"deliveryCost",l:"Delivery to Buyer",min:0,max:300,step:10,f:v=>fmt(v),tip:"Last-mile delivery cost"},
+    {k:"platformPctOverhead",l:"Platform Overhead (%)",min:2,max:20,step:1,f:v=>v+"%",tip:"Shopify, payment processing, hosting"},
+    {k:"csMinPerUnit",l:"Customer Service (mins)",min:0,max:45,step:5,f:v=>v+" min",tip:"Avg support time per item sold"},
+  ];
+  h+=`<div class="econ-sliders">${econSliders.map(s=>`<div class="econ-slider"><div class="s-label">${s.l}</div><div class="s-val">${s.f(ei[s.k])}</div><input type="range" min="${s.min}" max="${s.max}" step="${s.step}" value="${ei[s.k]}" oninput="updateEcon('${s.k}',this.value)"><div style="font-size:10px;color:var(--gray);margin-top:4px">${s.tip}</div></div>`).join("")}</div>`;
+  h+=`</div>`;
+
+  // Verdict box
+  h+=`<div class="econ-verdict" style="background:${verdictBg};border:1px solid ${verdictBorder}33"><div class="ev-icon">${verdictIcon}</div><div class="ev-title">${verdictTitle}</div><div class="ev-desc">${verdictDesc}</div></div>`;
+
+  // Key metrics dashboard
+  h+=`<div class="econ-dashboard">`;
+  h+=`<div class="econ-metric"><div class="em-label">Commission Earned / Unit</div><div class="em-val" style="color:var(--sage)">${fmt(commissionPerUnit)}</div><div class="em-sub">${liloComm}% of ${fmt(salePrice)} sale price</div></div>`;
+  h+=`<div class="econ-metric"><div class="em-label">Total Cost / Unit</div><div class="em-val" style="color:var(--terra)">${fmt(totalCostPerUnit)}</div><div class="em-sub">All-in operational cost to Lilo</div></div>`;
+  h+=`<div class="econ-metric"><div class="em-label">Contribution / Unit</div><div class="em-val" style="color:${contribPerUnit>=0?"var(--sage)":"var(--terra)"}">${fmt(contribPerUnit)}</div><div class="em-sub">${contribMarginPct}% contribution margin</div></div>`;
+  h+=`<div class="econ-metric"><div class="em-label">Annual Contribution</div><div class="em-val" style="color:${annualContrib>=0?"var(--sage)":"var(--terra)"}">${fmt(annualContrib)}</div><div class="em-sub">${monthlyUnits} units/mo × 12 months</div></div>`;
+  h+=`</div>`;
+
+  // Waterfall: cost breakdown
+  h+=`<div class="card"><div class="label">Cost Waterfall (per unit)</div>`;
+  h+=`<p style="font-size:12px;color:var(--gray);margin-bottom:16px;line-height:1.5">Where Lilo's money goes for each unit handled through this partnership.</p>`;
+  const costs=[
+    {l:"Pickup / Collection",v:ei.pickupCost,c:"var(--terra)"},
+    {l:"Photography",v:ei.photoCost,c:"#D4A843"},
+    {l:"Listing Labour",v:listingLabour,c:"#B8860B"},
+    {l:"Delivery to Buyer",v:ei.deliveryCost,c:"var(--terra)"},
+    {l:"Platform Overhead",v:platformCost,c:"var(--gray)"},
+    {l:"Customer Service",v:csLabour,c:"#9B8EC4"},
+  ];
+  h+=`<div class="econ-waterfall">`;
+  costs.forEach(c=>{
+    const pct=maxCost>0?Math.max(c.v/maxCost*100,2):2;
+    h+=`<div class="wf-row"><div class="wf-label">${c.l}</div><div class="wf-bar-wrap"><div class="wf-bar" style="width:${pct}%;background:${c.c}"></div></div><div class="wf-val">${fmt(c.v)}</div></div>`;
+  });
+  // Total line
+  h+=`<div class="wf-row" style="border-top:2px solid var(--charcoal);padding-top:12px;font-weight:600"><div class="wf-label">Total Cost</div><div class="wf-bar-wrap"><div class="wf-bar" style="width:100%;background:var(--charcoal)"></div></div><div class="wf-val">${fmt(totalCostPerUnit)}</div></div>`;
+  // Commission line for comparison
+  h+=`<div class="wf-row" style="font-weight:600;color:var(--sage)"><div class="wf-label">Commission Earned</div><div class="wf-bar-wrap"><div class="wf-bar" style="width:${Math.min(commissionPerUnit/totalCostPerUnit*100,100)}%;background:var(--sage)"></div></div><div class="wf-val">${fmt(commissionPerUnit)}</div></div>`;
+  h+=`</div></div>`;
+
+  // Monthly P&L
+  h+=`<div class="impact-box"><div class="label" style="color:var(--sage-m)">Monthly P&L — This Partnership</div>`;
+  h+=`<div class="impact-grid"><div><div class="impact-num">${fmt(monthlyRevenue)}</div><div class="impact-label">Commission revenue</div></div><div><div class="impact-num" style="color:var(--terra-l)">(${fmt(monthlyCost)})</div><div class="impact-label">Operational costs</div></div><div><div class="impact-num" style="color:${monthlyContrib>=0?"var(--sage-m)":"#FF8A80"}">${fmt(monthlyContrib)}</div><div class="impact-label">Net contribution</div></div></div>`;
+  h+=`<div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1)"><div class="compare-row" style="color:var(--gray)"><span>Cost-to-Serve Ratio</span><span>${monthlyRevenue>0?Math.round(monthlyCost/monthlyRevenue*100):0}%</span></div><div class="compare-bar"><div class="compare-bar-inner" style="width:${Math.min(monthlyRevenue>0?monthlyCost/monthlyRevenue*100:100,100)}%;background:${monthlyCost/monthlyRevenue<0.7?"var(--sage)":"var(--terra)"}"></div></div>`;
+  h+=`<div style="font-size:11px;color:var(--sage-m);margin-top:4px">${monthlyCost/monthlyRevenue<0.7?"Healthy — below 70% threshold":"⚠️ Above 70% — margin pressure"}</div>`;
+  h+=`</div></div>`;
+
+  // Breakeven analysis
+  h+=`<div class="card"><div class="label">Breakeven Analysis</div>`;
+  h+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px">`;
+  h+=`<div><div style="font-size:12px;color:var(--gray);margin-bottom:4px">Breakeven Volume</div><div style="font-family:var(--fh);font-size:28px;color:${breakevenActual<=monthlyUnits?"var(--sage)":"var(--terra)"}">${breakevenActual<999?breakevenActual+" units/mo":"N/A"}</div><div style="font-size:12px;color:var(--gray)">Current forecast: ${monthlyUnits} units/mo ${breakevenActual<=monthlyUnits?"✅":"⚠️"}</div></div>`;
+  h+=`<div><div style="font-size:12px;color:var(--gray);margin-bottom:4px">Safety Margin</div><div style="font-family:var(--fh);font-size:28px;color:${(monthlyUnits-breakevenActual)>0?"var(--sage)":"var(--terra)"}">${breakevenActual<999?(monthlyUnits-breakevenActual)+" units":"—"}</div><div style="font-size:12px;color:var(--gray)">${breakevenActual<999&&monthlyUnits>breakevenActual?Math.round((monthlyUnits-breakevenActual)/monthlyUnits*100)+"% buffer above breakeven":"Below or at breakeven"}</div></div>`;
+  h+=`</div></div>`;
+
+  // Sensitivity scenarios
+  h+=`<div class="card"><div class="label">Sensitivity Analysis</div>`;
+  h+=`<p style="font-size:12px;color:var(--gray);margin-bottom:16px;line-height:1.5">What happens to Lilo's annual contribution under different scenarios?</p>`;
+  h+=`<div class="sensitivity-grid">`;
+  const scenarios=[
+    {name:"Conservative",desc:`${scenarioLow.rec}% recovery, ${scenarioLow.comm}% comm, ${scenarioLow.units} units/mo`,val:scenarioContrib(scenarioLow)},
+    {name:"Base Case",desc:`${scenarioMid.rec}% recovery, ${scenarioMid.comm}% comm, ${scenarioMid.units} units/mo`,val:scenarioContrib(scenarioMid)},
+    {name:"Optimistic",desc:`${scenarioHigh.rec}% recovery, ${scenarioHigh.comm}% comm, ${scenarioHigh.units} units/mo`,val:scenarioContrib(scenarioHigh)},
+  ];
+  scenarios.forEach(s=>{
+    h+=`<div class="sensitivity-card"><div class="sc-scenario">${s.name}</div><div class="sc-val" style="color:${s.val>=0?"var(--sage)":"var(--terra)"}">${fmt(s.val)}</div><div class="sc-note">${s.desc}</div></div>`;
+  });
+  h+=`</div></div>`;
+
+  // Decision levers
+  h+=`<div class="card" style="background:rgba(107,78,139,.04);border-color:rgba(107,78,139,.15)"><div class="label" style="color:#6B4E8B">Margin Improvement Levers</div>`;
+  const levers=[];
+  if(ei.pickupCost>60) levers.push({lever:"Batch collections",impact:"Reduce pickup cost from "+fmt(ei.pickupCost)+" to ~"+fmt(ei.pickupCost*0.6)+" by collecting 3+ items per trip",saving:fmt((ei.pickupCost-ei.pickupCost*0.6)*monthlyUnits*12)+"/yr"});
+  if(ei.deliveryCost>100) levers.push({lever:"Zone-based delivery pricing",impact:"Pass partial delivery cost to buyer for distant locations. Could save "+fmt(ei.deliveryCost*0.3)+" avg per unit",saving:fmt(ei.deliveryCost*0.3*monthlyUnits*12)+"/yr"});
+  if(ei.photoCost>20) levers.push({lever:"Retailer-supplied imagery",impact:"Use hybrid model — retailer provides catalogue photos, Lilo adds condition shots only",saving:fmt((ei.photoCost-10)*monthlyUnits*12)+"/yr"});
+  if(ei.listingMins>15) levers.push({lever:"Listing templates",impact:"Pre-built templates per brand reduce listing time from "+ei.listingMins+" to ~10 mins",saving:fmt(((ei.listingMins-10)/60)*labourRate*monthlyUnits*12)+"/yr"});
+  if(ei.csMinPerUnit>10) levers.push({lever:"Self-service buyer FAQ",impact:"Reduce CS queries with automated condition guides and delivery tracking",saving:fmt(((ei.csMinPerUnit-8)/60)*labourRate*monthlyUnits*12)+"/yr"});
+  if(contribMarginPct<20) levers.push({lever:"Commission renegotiation",impact:"Increase from "+liloComm+"% to 30% — adds "+fmt(salePrice*0.05)+" per unit",saving:fmt(salePrice*0.05*monthlyUnits*12)+"/yr"});
+  if(levers.length===0) levers.push({lever:"Strong position",impact:"Margins are healthy. Focus on volume growth to scale contribution.",saving:"—"});
+
+  levers.forEach(l=>{
+    h+=`<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(107,78,139,.1)"><div style="flex:1"><div style="font-size:14px;font-weight:600;margin-bottom:4px">${l.lever}</div><div style="font-size:12px;color:var(--gray);line-height:1.5">${l.impact}</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:var(--fh);font-size:16px;color:#6B4E8B">${l.saving}</div><div style="font-size:10px;color:var(--gray)">potential saving</div></div></div>`;
+  });
+  h+=`</div>`;
+
+  // Assumptions
+  h+=`<div class="assumptions"><div class="label">Internal Model Assumptions</div><div class="assumptions-grid"><div><span>Labour rate: </span>$35/hr</div><div><span>Commission: </span>${liloComm}%</div><div><span>Recovery: </span>${liloRec}% of RRP</div></div></div>`;
+  h+=`<p class="note">⚠️ INTERNAL USE ONLY — This tab models Lilo's economics, not the retailer's. Do not share with partners. Replace cost assumptions with actual data from Freedom pilot operations to validate.</p>`;
+
+  h+=`</div>`;return h;
+}
+
+// ─── INIT ──────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
