@@ -131,10 +131,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .summary-section{margin-top:40px;padding:32px;background:var(--header-bg);border-radius:12px;color:#fff}
 .summary-section h3{font-family:var(--fb);font-size:24px;font-weight:700;margin-bottom:20px}
 .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.summary-block{padding:20px;background:rgba(255,255,255,.06);border-radius:8px}
-.summary-block .sb-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--highlight);margin-bottom:8px;font-weight:600}
-.summary-block .sb-value{font-family:var(--fb);font-size:22px;margin-bottom:4px;font-weight:700}
-.summary-block .sb-detail{font-size:12px;color:var(--sage-m);line-height:1.5}
+.summary-block{padding:20px;background:#EFF3F7;border-radius:8px}
+.summary-block .sb-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#555;margin-bottom:8px;font-weight:600}
+.summary-block .sb-value{font-family:var(--fb);font-size:22px;margin-bottom:4px;font-weight:700;color:var(--charcoal)}
+.summary-block .sb-detail{font-size:12px;color:#444;line-height:1.5}
 .note{font-size:12px;color:var(--gray);font-style:italic;line-height:1.6;margin-top:16px}
 .assumptions{padding:20px 24px;background:var(--sand);border-radius:10px;margin-bottom:8px}
 .assumptions-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:13px}
@@ -268,7 +268,7 @@ const MODEL_ICONS={listing_ownership:"📋",logistics:"🚚",pricing_approach:"�
 const MODEL_NAMES={listing_ownership:"Listing Management",logistics:"Logistics & Fulfilment",pricing_approach:"Pricing Strategy",stock_frequency:"Stock Pipeline",brand_visibility:"Brand Visibility"};
 
 // ─── STATE ──────────────────────────────────────────────
-let state={mainTab:"new",profile:"custom",tab:"fit",fitAns:{},fitFreeText:{},modelAns:{},calcInputs:{avgRRP:1200,monthlyUnits:30,currentRecovery:25,liloRec:48,warehouseCostPerUnit:40,avgWeeksInWarehouse:6,liloComm:25},econInputs:{},fitQ:0,modelQ:0,fitDone:false,modelDone:false};
+let state={mainTab:"new",profile:"custom",tab:"fit",fitAns:{},fitFreeText:{},modelAns:{},calcInputs:{avgRRP:1200,monthlyUnits:30,currentRecovery:25,liloRec:50,warehouseCostPerUnit:40,avgWeeksInWarehouse:3,liloComm:25},econInputs:{},fitQ:0,modelQ:0,fitDone:false,modelDone:false};
 
 const ECON_DEFAULTS={
   pickupCost:85,photoCost:25,listingMins:20,deliveryCost:120,platformPctOverhead:8,csMinPerUnit:15
@@ -281,7 +281,7 @@ function loadProfile(k){
   state.profile=k;state.tab="fit";state.fitQ=0;state.modelQ=0;
   const p=PROFILES[k];
   if(p.fit){state.fitAns={...p.fit};state.modelAns={...p.model};state.calcInputs={...p.calc};state.fitDone=true;state.modelDone=true;}
-  else{state.fitAns={};state.modelAns={};state.calcInputs={avgRRP:1200,monthlyUnits:30,currentRecovery:25,warehouseCostPerUnit:40,avgWeeksInWarehouse:6};state.fitDone=false;state.modelDone=false;}
+  else{state.fitAns={};state.modelAns={};state.calcInputs={avgRRP:1200,monthlyUnits:30,currentRecovery:25,liloRec:50,warehouseCostPerUnit:40,avgWeeksInWarehouse:3,liloComm:25};state.fitDone=false;state.modelDone=false;}
   initEcon();
   render();
 }
@@ -311,13 +311,13 @@ function calcScore(ans){
 
 function getTier(s,m){
   const p=s/m;
-  if(p>.75)return{tier:"High-Value Partner",color:"#2A8A3E",bg:"#E8F5EC",sum:"Strong alignment across volume, product fit, and commercial drivers. High-priority partnership with significant margin recovery potential.",acts:["Priority onboarding — fast-track to pilot","Dedicated account setup with Lilo team","Custom operating model co-design","Quarterly performance reviews from launch"]};
-  if(p>.50)return{tier:"Growth Opportunity",color:"#5BA033",bg:"#EDF6E8",sum:"Solid potential with areas to develop. Phased approach starting with highest-value categories would prove the model before scaling.",acts:["Start with focused pilot (top 1–2 categories)","Test logistics model before committing","Build content & photography capability","Review after 3 months and expand"]};
-  if(p>.25)return{tier:"Early Stage",color:"#C47A1A",bg:"#FEF3E2",sum:"Some potential but significant gaps to address before a pilot is viable. Worth a discovery conversation to understand if barriers can be resolved.",acts:["Identify key blockers (volume, geography, condition)","Share Lilo's minimum partner criteria","Revisit in 6 months if circumstances change","Consider a very limited trial on select items"]};
-  return{tier:"Not a Fit — At This Time",color:"#C0392B",bg:"#FDEDEC",sum:"Too many barriers to a viable partnership right now. Low volume, poor condition, geographic mismatch, or misaligned motivation make a pilot unlikely to succeed.",acts:["Revisit when volume or geography improves","Provide feedback on what would need to change","Keep on radar for future market expansion","Do not invest further BD time at this stage"]};
+  if(p>.75)return{tier:"High-Value Partner",color:"#00B050",bg:"#E8F5EC",sum:"Strong alignment across volume, product fit, and commercial drivers. High-priority partnership with significant margin recovery potential.",acts:["Priority onboarding — fast-track to pilot","Dedicated account setup with Lilo team","Custom operating model co-design","Quarterly performance reviews from launch"]};
+  if(p>.50)return{tier:"Good Opportunity",color:"#99CC00",bg:"#EDF6E8",sum:"Solid potential with areas to develop. Phased approach starting with highest-value categories would prove the model before scaling.",acts:["Start with focused pilot (top 1–2 categories)","Test logistics model before committing","Build content & photography capability","Review after 3 months and expand"]};
+  if(p>.25)return{tier:"Consider",color:"#FF9900",bg:"#FEF3E2",sum:"Some potential but significant gaps to address before a pilot is viable. Worth a discovery conversation to understand if barriers can be resolved.",acts:["Identify key blockers (volume, geography, condition)","Share Lilo's minimum partner criteria","Revisit in 6 months if circumstances change","Consider a very limited trial on select items"]};
+  return{tier:"Not a Fit",color:"#CC3300",bg:"#FDEDEC",sum:"Too many barriers to a viable partnership right now. Low volume, poor condition, geographic mismatch, or misaligned motivation make a pilot unlikely to succeed.",acts:["Revisit when volume or geography improves","Provide feedback on what would need to change","Keep on radar for future market expansion","Do not invest further BD time at this stage"]};
 }
 
-function fmt(n){return new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD",maximumFractionDigits:0}).format(n)}
+function fmt(n){if(n===undefined||n===null||isNaN(n))return'undefined';return new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD",maximumFractionDigits:0}).format(n)}
 
 // ─── RENDER ──────────────────────────────────────────────
 function render(){
@@ -389,14 +389,21 @@ function setMainTab(t){
   }
   if(t==='new'){
     state.profile='custom';state.fitAns={};state.fitFreeText={};state.modelAns={};
-    state.calcInputs={avgRRP:1200,monthlyUnits:30,currentRecovery:25,warehouseCostPerUnit:40,avgWeeksInWarehouse:6};
+    state.calcInputs={avgRRP:1200,monthlyUnits:30,currentRecovery:25,liloRec:50,warehouseCostPerUnit:40,avgWeeksInWarehouse:3,liloComm:25};
     state.fitDone=false;state.modelDone=false;state.fitQ=0;state.modelQ=0;state.tab='fit';
     initEcon();
   }
   render();
 }
 
-function setTab(t){state.tab=t;render()}
+function setTab(t){
+  state.tab=t;
+  // Ensure econ inputs are initialised before rendering that tab
+  if(t==='econ' && (!state.econInputs || !state.econInputs.pickupCost)) initEcon();
+  render();
+  // Scroll to top of page on every tab change
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
 
 function renderContent(){
@@ -930,6 +937,7 @@ function renderSummary(){
   const liloRec=ci.liloRec||48,liloComm=ci.liloComm||25,liloWks=3;
   const curRev=ci.monthlyUnits*ci.avgRRP*(ci.currentRecovery/100);
   const liloGross=ci.monthlyUnits*ci.avgRRP*(liloRec/100);
+  const liloNet=liloGross*(1-liloComm/100);
   const annUpliftGross=(liloGross-curRev)*12;
   const annCommission=liloGross*(liloComm/100)*12;
   const annUp=annUpliftGross-annCommission;                // total = uplift less commission
@@ -1102,10 +1110,10 @@ function renderEcon(){
 
   // Verdict
   let verdictIcon,verdictTitle,verdictDesc,verdictBg,verdictBorder;
-  if(contribMarginPct>=30){verdictIcon="✅";verdictTitle="Profitable Partnership";verdictDesc="Strong unit economics. Lilo earns a healthy margin after all operational costs. This partnership is commercially sustainable at current volumes.";verdictBg="var(--sage-l)";verdictBorder="var(--sage)";}
-  else if(contribMarginPct>=10){verdictIcon="⚠️";verdictTitle="Marginal — Volume Dependent";verdictDesc="Positive but thin margins. Profitability depends on maintaining volume and controlling logistics costs. Monitor cost-to-serve closely during pilot.";verdictBg="var(--terra-l)";verdictBorder="var(--terra)";}
-  else if(contribMarginPct>0){verdictIcon="🔶";verdictTitle="Breakeven Risk";verdictDesc="Very slim margins. Small cost increases or volume drops could push this partnership negative. Consider renegotiating commission or reducing service level.";verdictBg="#FFF3E0";verdictBorder="#E6A817";}
-  else{verdictIcon="🚫";verdictTitle="Unprofitable at Current Terms";verdictDesc="Lilo loses money on each unit at these cost assumptions. Either reduce operational costs, increase commission, or decline this partnership configuration.";verdictBg="#FDEBEB";verdictBorder="#C4724E";}
+  if(contribMarginPct>=30){verdictIcon="✅";verdictTitle="Profitable Partnership";verdictDesc="Strong unit economics. Lilo earns a healthy margin after all operational costs. This partnership is commercially sustainable at current volumes.";verdictBg="#D5D5D5";verdictBorder="var(--sage)";}
+  else if(contribMarginPct>=10){verdictIcon="⚠️";verdictTitle="Marginal — Volume Dependent";verdictDesc="Positive but thin margins. Profitability depends on maintaining volume and controlling logistics costs. Monitor cost-to-serve closely during pilot.";verdictBg="#D5D5D5";verdictBorder="var(--terra)";}
+  else if(contribMarginPct>0){verdictIcon="🔶";verdictTitle="Breakeven Risk";verdictDesc="Very slim margins. Small cost increases or volume drops could push this partnership negative. Consider renegotiating commission or reducing service level.";verdictBg="#D5D5D5";verdictBorder="#E6A817";}
+  else{verdictIcon="🚫";verdictTitle="Unprofitable at Current Terms";verdictDesc="Lilo loses money on each unit at these cost assumptions. Either reduce operational costs, increase commission, or decline this partnership configuration.";verdictBg="#D5D5D5";verdictBorder="#C4724E";}
 
   // Max bar width reference for waterfall
   const maxCost=Math.max(ei.pickupCost,ei.photoCost,listingLabour,ei.deliveryCost,platformCost,csLabour,1);
