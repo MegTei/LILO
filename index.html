@@ -211,37 +211,38 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 // ─── DATA ──────────────────────────────────────────────
 const PROFILES={
 nick_scali:{name:"Nick Scali",desc:"ASX-listed premium furniture retailer. 64 Nick Scali + 43 Plush stores AU/NZ. ~$470M revenue. Dedicated clearance outlets (Melbourne, Castle Hill). 5,000+ containers annually. Core: leather & fabric lounges, dining, occasional.",
-fit:{stock_volume:4,product_category:[4,3],brand_position:4,current_markdown:[4,3],geography:[4],condition:[4],motivation:[4,3]},
+fit:{stock_volume:4,product_category:[0,1],brand_position:4,current_markdown:[0,2],geography:[0,1],condition:[0],motivation:[0,1]},
 fitNotes:{stock_volume:"100+ stores with continuous showroom rotations. Plush integration creating surplus. Clearance outlets indicate high volume.",product_category:"Core sofas & lounges — highest resale demand. Also dining, entertainment, occasional.",brand_position:"Premium positioning, strong recognition. Commands resale premium.",current_markdown:"Dedicated clearance outlets with up to 40% off. High overhead to shift surplus.",geography:"Multiple QLD locations incl. Helensvale, Capalaba (Plush).",condition:"Primarily ex-display (like new). Returns assessed before resale.",motivation:"Clearance outlets expensive (lease, staff, logistics). Lilo offers recovery without overhead."},
 model:{listing_ownership:"hybrid",logistics:"customer_pickup",pricing_approach:"floor_price",stock_frequency:"continuous",brand_visibility:"branded"},
 modelNotes:{listing_ownership:"Comprehensive product content exists. Lilo optimises for resale audience.",logistics:"Premium brand — buyer pickup from designated showroom areas preferred.",pricing_approach:"Strong brand equity — floor price protects while Lilo maximises recovery.",stock_frequency:"100+ stores = continuous ex-display turnover year-round.",brand_visibility:"Brand recognition is major resale asset. Branded page drives trust."},
-calc:{avgRRP:2800,monthlyUnits:80,currentRecovery:30,warehouseCostPerUnit:55,avgWeeksInWarehouse:8}},
+calc:{avgRRP:2800,monthlyUnits:80,currentRecovery:30,liloRec:52,warehouseCostPerUnit:55,avgWeeksInWarehouse:8,liloComm:25}},
 
 freedom:{name:"Freedom",desc:"Major AU furniture & homewares retailer. Existing Lilo partner for ex-display stock. Wide range from sofas to décor. Mid-to-premium positioning. Learnings from pilot inform this framework.",
-fit:{stock_volume:4,product_category:[4,3,3,1],brand_position:3,current_markdown:[4,3],geography:[4],condition:[4,3],motivation:[4,3]},
+fit:{stock_volume:4,product_category:[0,1,2,3],brand_position:3,current_markdown:[0,2],geography:[0,1],condition:[0,1],motivation:[0,1]},
 fitNotes:{stock_volume:"Large national network, frequent changeovers. Already supplying Lilo.",product_category:"Full range: sofas, dining, bedroom, storage, décor.",brand_position:"Mid-to-premium. Good resale retention.",current_markdown:"Used in-store markdowns. Lilo partnership proves willingness.",geography:"National with strong QLD network.",condition:"Mix of ex-display and customer returns.",motivation:"Already partnered — proven alignment."},
 model:{listing_ownership:"hybrid",logistics:"retailer_manages",pricing_approach:"lilo_led",stock_frequency:"continuous",brand_visibility:"branded"},
 modelNotes:null,
-calc:{avgRRP:1800,monthlyUnits:60,currentRecovery:25,warehouseCostPerUnit:45,avgWeeksInWarehouse:6}},
+calc:{avgRRP:1800,monthlyUnits:60,currentRecovery:25,liloRec:48,warehouseCostPerUnit:45,avgWeeksInWarehouse:6,liloComm:25}},
 
 coco_republic:{name:"Coco Republic",desc:"Premium/luxury AU furniture & interior design house. Aspirational brand. Smaller network, high item values. Curated, design-led collections.",
-fit:{stock_volume:2,product_category:[4,3,3],brand_position:4,current_markdown:[3],geography:[1],condition:[4],motivation:[3]},
+fit:{stock_volume:2,product_category:[0,1,2],brand_position:4,current_markdown:[1],geography:[3],condition:[0],motivation:[2]},
 fitNotes:{stock_volume:"Smaller network = lower volume, but high-value pieces.",product_category:"Premium sofas, dining, bedroom — strong resale.",brand_position:"Luxury. Significant resale premium.",current_markdown:"Selective markdowns, private sales.",geography:"Sydney/Melbourne focused. Limited QLD.",condition:"Showroom condition. High standards.",motivation:"Brand protection is primary concern."},
 model:{listing_ownership:"full_service",logistics:"customer_pickup",pricing_approach:"floor_price",stock_frequency:"seasonal",brand_visibility:"mixed"},
 modelNotes:null,
-calc:{avgRRP:4500,monthlyUnits:15,currentRecovery:35,warehouseCostPerUnit:65,avgWeeksInWarehouse:10}},
+calc:{avgRRP:4500,monthlyUnits:15,currentRecovery:35,liloRec:55,warehouseCostPerUnit:65,avgWeeksInWarehouse:10,liloComm:20}},
 
 custom:{name:"New Assessment",desc:null,fit:null,model:null,calc:null}
 };
 
 const FIT_QS=[
-{id:"stock_volume",num:1,q:"What volume of ex-display, returns, or seconds stock do you generate monthly?",opts:[{l:"Under 10 pieces",v:1},{l:"10–30 pieces",v:2},{l:"30–80 pieces",v:3},{l:"80+ pieces",v:4},{l:"Other",v:1,freetext:true}],w:3,ctx:"Higher volume = stronger partnership economics",multi:false},
-{id:"product_category",num:2,q:"What are your primary product categories?",opts:[{l:"Sofas & lounge",v:4},{l:"Dining & tables",v:3},{l:"Bedroom & storage",v:3},{l:"Décor & accessories",v:1},{l:"Bedding",v:2},{l:"Kitchen",v:1},{l:"Other",v:1,freetext:true}],w:2,ctx:"Larger furniture items have strongest resale demand",multi:true},
-{id:"brand_position",num:3,q:"How would you describe your brand positioning?",opts:[{l:"Premium / luxury",v:4},{l:"Mid-market quality",v:3},{l:"Value / mass market",v:1},{l:"Mixed range",v:2}],w:2,ctx:"Premium and mid-market brands retain higher resale value",multi:false},
-{id:"current_markdown",num:4,q:"How do you currently handle unsold, ex-display, or returned stock?",opts:[{l:"Deep in-store markdowns (60%+ off)",v:4},{l:"Bulk liquidation / clearance",v:3},{l:"Warehouse storage until sold",v:3},{l:"Donated or written off",v:2},{l:"Online marketplace",v:3},{l:"Other",v:2,freetext:true}],w:3,ctx:"Current approach determines margin recovery opportunity",multi:true},
-{id:"geography",num:5,q:"Where are you primarily located?",opts:[{l:"South East Queensland",v:4},{l:"Greater Brisbane",v:4},{l:"Regional QLD",v:2},{l:"Interstate",v:1},{l:"Other",v:1,freetext:true}],w:2,ctx:"Proximity impacts logistics cost and delivery feasibility",multi:true},
-{id:"condition",num:6,q:"What condition is the majority of your available stock in?",opts:[{l:"Like new / ex-display only",v:4},{l:"Minor cosmetic imperfections",v:3},{l:"Requires minor repair",v:2},{l:"Mixed conditions",v:2}],w:2,ctx:"Higher condition stock achieves better sell-through rates",multi:true},
-{id:"motivation",num:7,q:"What is the retailer's primary motivation for exploring resale partnerships?",opts:[{l:"Recover margin on marked-down stock",v:4},{l:"Free up warehouse / floor space",v:3},{l:"Sustainability credentials",v:2},{l:"Reach new customer segments",v:3}],w:1,ctx:"Alignment on commercial drivers ensures partnership success",multi:true}
+{id:"stock_volume",num:1,q:"What is the total monthly volume of B stock?",opts:[{l:"Under 10 pieces",v:1},{l:"10–30 pieces",v:2},{l:"30–80 pieces",v:3},{l:"80+ pieces",v:4},{l:"Other",v:1,freetext:true}],w:3,ctx:"Higher volume = stronger partnership economics",multi:false},
+{id:"bstock_breakdown",num:2,q:"What are the approximate category volumes of B Stock?",type:"numeric_breakdown",categories:["Seconds","Returns","Damaged","Ex-Display","Discontinued"],w:0,ctx:"Enter approximate monthly unit counts per category — leave blank if not applicable"},
+{id:"product_category",num:3,q:"What are your primary product categories?",opts:[{l:"Sofas & lounge",v:4},{l:"Dining & tables",v:3},{l:"Bedroom & storage",v:3},{l:"Décor & accessories",v:1},{l:"Bedding",v:2},{l:"Kitchen",v:1},{l:"Other",v:1,freetext:true}],w:2,ctx:"Larger furniture items have strongest resale demand",multi:true},
+{id:"brand_position",num:4,q:"How would you describe your brand positioning?",opts:[{l:"Premium / luxury",v:4},{l:"Mid-market quality",v:3},{l:"Value / mass market",v:1},{l:"Mixed range",v:2}],w:2,ctx:"Premium and mid-market brands retain higher resale value",multi:false},
+{id:"current_markdown",num:5,q:"How do you currently handle unsold, ex-display, or returned stock?",opts:[{l:"Deep in-store markdowns (60%+ off)",v:4},{l:"Bulk liquidation / clearance",v:3},{l:"Warehouse storage until sold",v:3},{l:"Donated or written off",v:2},{l:"Online marketplace",v:3},{l:"Other",v:2,freetext:true}],w:3,ctx:"Current approach determines margin recovery opportunity",multi:true},
+{id:"geography",num:6,q:"Where are you primarily located?",opts:[{l:"South East Queensland",v:4},{l:"Greater Brisbane",v:4},{l:"Regional QLD",v:2},{l:"Interstate",v:1},{l:"Other",v:1,freetext:true}],w:2,ctx:"Proximity impacts logistics cost and delivery feasibility",multi:true},
+{id:"condition",num:7,q:"What condition is the majority of your available stock in?",opts:[{l:"Like new / ex-display only",v:4},{l:"Minor cosmetic imperfections",v:3},{l:"Requires minor repair",v:2},{l:"Mixed conditions",v:2}],w:2,ctx:"Higher condition stock achieves better sell-through rates",multi:true},
+{id:"motivation",num:8,q:"What is the retailer's primary motivation for exploring resale partnerships?",opts:[{l:"Recover margin on marked-down stock",v:4},{l:"Free up warehouse / floor space",v:3},{l:"Sustainability credentials",v:2},{l:"Reach new customer segments",v:3}],w:1,ctx:"Alignment on commercial drivers ensures partnership success",multi:true}
 ];
 
 const MODEL_QS=[
@@ -264,7 +265,7 @@ const MODEL_ICONS={listing_ownership:"📋",logistics:"🚚",pricing_approach:"�
 const MODEL_NAMES={listing_ownership:"Listing Management",logistics:"Logistics & Fulfilment",pricing_approach:"Pricing Strategy",stock_frequency:"Stock Pipeline",brand_visibility:"Brand Visibility"};
 
 // ─── STATE ──────────────────────────────────────────────
-let state={mainTab:"new",profile:"custom",tab:"fit",fitAns:{},fitFreeText:{},modelAns:{},calcInputs:{avgRRP:1200,monthlyUnits:30,currentRecovery:25,warehouseCostPerUnit:40,avgWeeksInWarehouse:6},econInputs:{},fitQ:0,modelQ:0,fitDone:false,modelDone:false};
+let state={mainTab:"new",profile:"custom",tab:"fit",fitAns:{},fitFreeText:{},modelAns:{},calcInputs:{avgRRP:1200,monthlyUnits:30,currentRecovery:25,liloRec:48,warehouseCostPerUnit:40,avgWeeksInWarehouse:6,liloComm:25},econInputs:{},fitQ:0,modelQ:0,fitDone:false,modelDone:false};
 
 const ECON_DEFAULTS={
   pickupCost:85,photoCost:25,listingMins:20,deliveryCost:120,platformPctOverhead:8,csMinPerUnit:15
@@ -285,14 +286,19 @@ function loadProfile(k){
 function calcScore(ans){
   let s=0,m=0;
   FIT_QS.forEach(q=>{
+    if(q.type==='numeric_breakdown') return;
     m+=4*q.w;
     const a=ans[q.id];
     if(a===undefined||a===null) return;
     if(Array.isArray(a)){
-      const vals=a.filter(v=>typeof v==='number');
+      // a contains selected option indices — look up v for each
+      const vals=a.map(idx=>{
+        const opt=q.opts[idx];
+        return opt?opt.v:0;
+      }).filter(v=>v>0);
       if(vals.length>0) s+=Math.max(...vals)*q.w;
     } else if(a==='other'){
-      s+=1*q.w; // Other = lowest score
+      s+=1*q.w;
     } else {
       s+=a*q.w;
     }
@@ -406,23 +412,24 @@ function getFitVal(id){
   return a!==undefined?a:null;
 }
 
-function isMultiSelected(id,v){
+function isMultiSelected(id,idx){
   const a=state.fitAns[id];
-  if(Array.isArray(a))return a.includes(v);
-  return a===v;
-}
-
-function isOtherSelected(id){
-  const a=state.fitAns[id];
-  if(Array.isArray(a))return a.includes('other');
+  if(Array.isArray(a))return a.includes(idx);
   return false;
 }
 
-function fitToggleMulti(id,v){
+function isOtherSelected(id,otherIdx){
+  const a=state.fitAns[id];
+  if(Array.isArray(a))return a.includes(otherIdx);
+  return false;
+}
+
+function fitToggleMulti(id,idx){
+  idx=Number(idx);
   if(!Array.isArray(state.fitAns[id]))state.fitAns[id]=[];
-  const idx=state.fitAns[id].indexOf(v);
-  if(idx>=0)state.fitAns[id].splice(idx,1);
-  else state.fitAns[id].push(v);
+  const pos=state.fitAns[id].indexOf(idx);
+  if(pos>=0)state.fitAns[id].splice(pos,1);
+  else state.fitAns[id].push(idx);
   renderContent();
 }
 
@@ -457,12 +464,28 @@ function fitSelect(v){
   render();
 }
 
+function fitSetNumeric(id,cat,val){
+  if(!state.fitAns[id]||typeof state.fitAns[id]!=='object'||Array.isArray(state.fitAns[id])){
+    state.fitAns[id]={};
+  }
+  const n=parseInt(val)||0;
+  if(n>0) state.fitAns[id][cat]=n;
+  else delete state.fitAns[id][cat];
+}
+
+function calcBstockTotal(){
+  const vals=state.fitAns['bstock_breakdown']||{};
+  const t=Object.values(vals).reduce((s,v)=>s+(parseInt(v)||0),0);
+  return t+' units/mo';
+}
+
 function fitBack(){if(state.fitQ>0){state.fitQ--;render()}}
 
 function hasAnswer(q){
+  if(q.type==='numeric_breakdown') return true; // always skippable
   const a=state.fitAns[q.id];
-  if(Array.isArray(a))return a.filter(v=>typeof v==='number').length>0;
-  if(a==='other')return true;
+  if(Array.isArray(a))return a.length>0;
+  if(a==='other') return true;
   return a!==undefined&&a!==null;
 }
 
@@ -477,10 +500,24 @@ function renderFit(){
     if(pf&&p.fitNotes){
       h+=`<div class="card"><div class="label">Score Breakdown</div>`;
       FIT_QS.forEach(fq=>{
+        if(fq.type==='numeric_breakdown'){
+          // Show category totals summary instead of a score bar
+          const vals=state.fitAns[fq.id]||{};
+          const cats=Object.entries(vals).map(([k,v])=>`${k}: ${v}`).join(' · ');
+          const total=Object.values(vals).reduce((s,v)=>s+(parseInt(v)||0),0);
+          if(total>0){
+            h+=`<div class="breakdown-item"><div class="row"><span><strong style="font-size:10px;color:var(--gray)">${fq.num}.</strong> ${fq.q.substring(0,50)}…</span><span style="color:var(--sage);font-weight:600">${total} units/mo</span></div><div class="breakdown-note">${cats}</div></div>`;
+          }
+          return;
+        }
         const v=state.fitAns[fq.id];
-        const scoreVal=Array.isArray(v)?Math.max(...v.filter(x=>typeof x==='number'),0):(v||0);
+        const scoreVal=Array.isArray(v)
+          ? Math.max(...v.map(idx=>{ const o=fq.opts[idx]; return o?o.v:0; }).filter(x=>x>0), 0)
+          : (v==='other'?1:(v||0));
         const bp=scoreVal/4*100;
-        const optLabel=Array.isArray(v)?v.filter(x=>typeof x==='number').map(n=>fq.opts.find(o=>o.v===n)?.l).filter(Boolean).join(', '):(fq.opts.find(o=>o.v===v)?.l||'');
+        const optLabel=Array.isArray(v)
+          ? v.map(idx=>fq.opts[idx]?fq.opts[idx].l:'').filter(Boolean).join(', ')
+          : (fq.opts.find(o=>o.v===v)?.l||v||'');
         const col=bp>=75?"var(--sage)":bp>=50?"var(--terra)":"var(--gray)";
         const note=p.fitNotes[fq.id]||"";
         h+=`<div class="breakdown-item"><div class="row"><span><strong style="font-size:10px;color:var(--gray)">${fq.num}.</strong> ${fq.q.substring(0,50)}${fq.q.length>50?"…":""}</span><span>${optLabel}</span></div><div class="breakdown-bar"><div class="breakdown-bar-inner" style="width:${bp}%;background:${col}"></div></div>${note?`<div class="breakdown-note">${note}</div>`:""}</div>`;
@@ -501,18 +538,42 @@ function renderFit(){
     h+=`<div class="q-label" style="display:flex;justify-content:space-between"><span>Question ${q.num} of ${FIT_QS.length}</span>${q.multi?'<span style="color:var(--sage);font-weight:600">Select all that apply</span>':''}</div>`;
     h+=`<div class="q-title">${q.q}</div><div class="q-ctx">${q.ctx}</div>`;
 
-    if(q.multi){
-      // Multi-select layout
+    if(q.type==='numeric_breakdown'){
+      // Numeric input per category
+      const vals=state.fitAns[q.id]||{};
+      const total=Object.values(vals).reduce((s,v)=>s+(parseInt(v)||0),0);
+      h+=`<div style="display:flex;flex-direction:column;gap:12px;margin-bottom:8px">`;
+      q.categories.forEach(cat=>{
+        const v=vals[cat]||'';
+        h+=`<div style="display:flex;align-items:center;gap:16px;padding:14px 20px;background:var(--card);border:1.5px solid var(--div);border-radius:8px">
+          <div style="flex:1;font-size:14px;font-weight:500;color:var(--charcoal)">${cat}</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="number" min="0" step="1" placeholder="0"
+              value="${v}"
+              oninput="fitSetNumeric('${q.id}','${cat}',this.value);document.getElementById('bstock-total').textContent=calcBstockTotal()"
+              style="width:90px;padding:8px 12px;border:1.5px solid var(--div);border-radius:6px;font-family:var(--fb);font-size:15px;font-weight:600;text-align:right;color:var(--charcoal);background:#fff;outline:none"
+              onfocus="this.style.borderColor='var(--sage)'" onblur="this.style.borderColor='var(--div)'">
+            <span style="font-size:13px;color:var(--gray)">units/mo</span>
+          </div>
+        </div>`;
+      });
+      h+=`</div>`;
+      h+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:var(--sage-l);border-radius:8px;margin-bottom:8px">
+        <span style="font-size:13px;font-weight:600;color:var(--sage)">Total B Stock</span>
+        <span id="bstock-total" style="font-family:var(--fh);font-size:20px;color:var(--sage)">${total} units/mo</span>
+      </div>`;
+      h+=`<p class="note" style="margin-bottom:16px">Leave blank for any categories that don't apply. This breakdown helps Lilo plan capacity and prioritise categories.</p>`;
+      h+=`<button class="btn-next" onclick="fitNextQ()">Next →</button>`;
+    } else if(q.multi){
       h+=`<div class="opts-multi">`;
-      q.opts.forEach(o=>{
-        const sel=isMultiSelected(q.id,o.freetext?'other':o.v);
-        h+=`<button class="opt-multi ${sel?'sel':''}" onclick="fitToggleMulti('${q.id}',${o.freetext?'\'other\'':o.v})"><div class="check">${sel?'✓':''}</div><span>${o.l}</span></button>`;
-        if(o.freetext&&isOtherSelected(q.id)){
+      q.opts.forEach((o,oIdx)=>{
+        const sel=isMultiSelected(q.id,oIdx);
+        h+=`<button class="opt-multi ${sel?'sel':''}" onclick="fitToggleMulti('${q.id}',${oIdx})"><div class="check">${sel?'✓':''}</div><span>${o.l}</span></button>`;
+        if(o.freetext&&isOtherSelected(q.id,oIdx)){
           h+=`</div><div style="margin:-4px 0 10px"><input class="freetext-input" type="text" placeholder="Please specify..." value="${state.fitFreeText[q.id]||''}" oninput="fitSetOtherText('${q.id}',this.value)"></div><div class="opts-multi">`;
         }
       });
       h+=`</div>`;
-      // Also store numeric value for "other" when toggled
       h+=`<button class="btn-next" onclick="fitNextQ()" ${!answered?'disabled':''}>`;
       h+=state.fitQ>=FIT_QS.length-1?'See Results →':'Next →';
       h+=`</button>`;
@@ -597,16 +658,35 @@ function modelBack(){if(state.modelQ>0){state.modelQ--;render()}}
 // ─── VALUE TAB ──────────────────────────────────────────────
 function renderValue(){
   const p=PROFILES[state.profile];const pf=isPrefill();const ci=state.calcInputs;
-  const liloRec=48,liloComm=25,liloWks=3;
-  const curRev=ci.monthlyUnits*ci.avgRRP*(ci.currentRecovery/100);
-  const liloGross=ci.monthlyUnits*ci.avgRRP*(liloRec/100);
-  const liloNet=liloGross*(1-liloComm/100);
-  const annUp=(liloNet-curRev)*12;
-  const curWH=ci.monthlyUnits*ci.warehouseCostPerUnit*(ci.avgWeeksInWarehouse/4);
-  const liloWHc=ci.monthlyUnits*ci.warehouseCostPerUnit*(liloWks/4);
-  const annWH=(curWH-liloWHc)*12;
-  const total=annUp+annWH;
-  const barPct=Math.min(curRev/Math.max(liloNet,1)*100,100);
+  const liloRec=ci.liloRec||48,liloComm=ci.liloComm||25,liloWks=3;
+
+  // Step 1 — current monthly revenue
+  const curRev = ci.avgRRP * ci.monthlyUnits * (ci.currentRecovery / 100);
+
+  // Step 2 — Lilo monthly gross (before commission)
+  const liloGross = ci.avgRRP * ci.monthlyUnits * (liloRec / 100);
+
+  // Step 3 — Lilo commission amount monthly
+  const liloCommAmt = liloGross * (liloComm / 100);
+
+  // Step 4 — Lilo net to retailer (after commission)
+  const liloNet = liloGross - liloCommAmt;
+
+  // Metric 1: Margin recovery uplift = GROSS difference × 12 (before commission)
+  const annUpliftGross = (liloGross - curRev) * 12;
+
+  // Metric 2: Warehouse cost saving = cost/unit/wk × units × weeks × 12
+  const monthlyWH = ci.warehouseCostPerUnit * ci.monthlyUnits * ci.avgWeeksInWarehouse;
+  const annWH = monthlyWH * 12;
+
+  // Metric 3: Total annual benefit = margin uplift LESS commission (per formula)
+  const annCommission = liloCommAmt * 12;
+  const annTotal = annUpliftGross - annCommission;   // = (liloNet - curRev) * 12
+
+  // Metric 4: Margin % = liloNet as % of gross sales value
+  const marginPct = liloGross > 0 ? Math.round((liloNet / liloGross) * 100) : 0;
+
+  const barPct = Math.min(curRev / Math.max(liloGross, 1) * 100, 100);
 
   let h=`<div class="fade"><h2 class="section">Commercial Value Estimator${pf?" — "+p.name:""}</h2><p class="section-desc">${pf?"Estimated financial impact based on this partner's profile. Adjust sliders to refine.":"Model the financial impact of partnering with Lilo. Adjust the inputs below or upload a stock file to auto-calculate average item value."}</p>`;
 
@@ -636,13 +716,57 @@ function renderValue(){
 
   // ── Sliders ──
   h+=`<div class="calc-header" style="background:var(--terra-l);border:1px solid var(--terra)33;border-radius:10px;padding:20px 24px;margin-bottom:20px"><p style="font-size:14px;color:var(--gray);margin:0">Adjust inputs to reflect your business. Estimates update in real-time.</p></div>`;
-  const sliders=[{k:"avgRRP",l:"Average item RRP",min:200,max:5000,step:50,f:v=>fmt(v)},{k:"monthlyUnits",l:"Monthly units available",min:5,max:200,step:5,f:v=>v+" units"},{k:"currentRecovery",l:"Current recovery (% of RRP)",min:5,max:60,step:5,f:v=>v+"%"},{k:"warehouseCostPerUnit",l:"Warehouse cost/unit/week",min:10,max:100,step:5,f:v=>fmt(v)},{k:"avgWeeksInWarehouse",l:"Avg weeks in warehouse",min:1,max:16,step:1,f:v=>v+" weeks"}];
-  h+=`<div class="sliders">${sliders.map(s=>`<div class="slider-card"><div class="s-label">${s.l}</div><div class="s-val">${s.f(ci[s.k])}</div><input type="range" min="${s.min}" max="${s.max}" step="${s.step}" value="${ci[s.k]}" oninput="updateCalc('${s.k}',this.value)"></div>`).join("")}</div>`;
+
+  // Retailer inputs (2-col grid)
+  const retailerSliders=[
+    {k:"avgRRP",               l:"Average item RRP",              min:200, max:5000, step:50, f:v=>fmt(v)},
+    {k:"monthlyUnits",         l:"Monthly units available",       min:5,   max:200,  step:5,  f:v=>v+" units"},
+    {k:"currentRecovery",      l:"Current recovery (% of RRP)",   min:5,   max:80,   step:5,  f:v=>v+"%"},
+    {k:"warehouseCostPerUnit", l:"Warehouse cost/unit/week",      min:10,  max:200,  step:5,  f:v=>fmt(v)},
+    {k:"avgWeeksInWarehouse",  l:"Avg weeks in warehouse",        min:1,   max:16,   step:1,  f:v=>v+" weeks"},
+  ];
+  h+=`<div class="sliders">${retailerSliders.map(s=>
+    `<div class="slider-card"><div class="s-label">${s.l}</div><div class="s-val">${s.f(ci[s.k])}</div><input type="range" min="${s.min}" max="${s.max}" step="${s.step}" value="${ci[s.k]}" oninput="updateCalc('${s.k}',this.value)"></div>`
+  ).join("")}</div>`;
+
+  // Lilo assumptions — 2 sliders side by side with teal highlight
+  const liloSliders=[
+    {k:"liloRec",  l:"Lilo recovery (% of RRP)", min:10, max:90, step:1, f:v=>v+"%"},
+    {k:"liloComm", l:"Lilo commission rate",      min:5,  max:40, step:1, f:v=>v+"%"},
+  ];
+  h+=`<div style="margin-bottom:24px">
+    <div class="label" style="color:var(--sage);margin-bottom:10px">Lilo Assumptions</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">${liloSliders.map(s=>
+      `<div class="slider-card" style="border-color:var(--sage);background:var(--sage-l)"><div class="s-label">${s.l}</div><div class="s-val" style="color:var(--sage)">${s.f(ci[s.k])}</div><input type="range" min="${s.min}" max="${s.max}" step="${s.step}" value="${ci[s.k]}" oninput="updateCalc('${s.k}',this.value)"></div>`
+    ).join("")}</div>
+  </div>`;
 
   // ── Impact ──
-  h+=`<div class="impact-box"><div class="label" style="color:var(--highlight)">Estimated Annual Impact</div><div class="impact-grid"><div><div class="impact-num">${fmt(annUp)}</div><div class="impact-label">Margin recovery uplift</div></div><div><div class="impact-num">${fmt(annWH)}</div><div class="impact-label">Warehouse cost saving</div></div><div><div class="impact-num" style="color:${total>0?"var(--highlight)":"var(--terra)"}">${fmt(total)}</div><div class="impact-label">Total annual benefit</div></div></div>`;
-  h+=`<div class="compare-row" style="color:rgba(255,255,255,.6)"><span>Current approach</span><span>${fmt(curRev)}/mo</span></div><div class="compare-bar"><div class="compare-bar-inner" style="width:${barPct}%;background:rgba(255,255,255,.3)"></div></div>`;
-  h+=`<div class="compare-row" style="color:var(--highlight)"><span>Via Lilo (net of commission)</span><span>${fmt(liloNet)}/mo</span></div><div class="compare-bar"><div class="compare-bar-inner" style="width:100%;background:linear-gradient(90deg,var(--highlight),rgba(17,255,255,.5))"></div></div></div>`;
+  h+=`<div class="impact-box"><div class="label" style="color:var(--highlight)">Estimated Annual Impact</div><div class="impact-grid" style="grid-template-columns:1fr 1fr 1fr 1fr">
+    <div><div class="impact-num">${fmt(annUpliftGross)}</div><div class="impact-label">Margin recovery uplift</div></div>
+    <div><div class="impact-num">${fmt(annWH)}</div><div class="impact-label">Warehouse cost</div></div>
+    <div><div class="impact-num" style="color:${annTotal>0?"var(--highlight)":"#FF6B6B"}">${fmt(annTotal)}</div><div class="impact-label">Total annual benefit</div></div>
+    <div><div class="impact-num" style="color:var(--highlight)">${marginPct}%</div><div class="impact-label">Margin (net of commission)</div></div>
+  </div>`;
+  h+=`<div class="compare-row" style="color:rgba(255,255,255,.6)"><span>Current monthly recovery</span><span>${fmt(curRev)}/mo</span></div><div class="compare-bar"><div class="compare-bar-inner" style="width:${barPct}%;background:rgba(255,255,255,.3)"></div></div>`;
+  h+=`<div class="compare-row" style="color:var(--highlight)"><span>Via Lilo (gross, before commission)</span><span>${fmt(liloGross)}/mo</span></div><div class="compare-bar"><div class="compare-bar-inner" style="width:100%;background:linear-gradient(90deg,var(--highlight),rgba(17,255,255,.5))"></div></div>`;
+  h+=`<div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:11px;color:rgba(255,255,255,.55);line-height:1.9">
+    <div>
+      <strong style="color:rgba(255,255,255,.8);display:block;margin-bottom:4px">① Margin recovery uplift</strong>
+      Lilo: ${fmt(ci.avgRRP)} × ${ci.monthlyUnits} × ${liloRec}% = ${fmt(liloGross)}/mo<br>
+      Current: ${fmt(ci.avgRRP)} × ${ci.monthlyUnits} × ${ci.currentRecovery}% = ${fmt(curRev)}/mo<br>
+      Uplift = ${fmt(liloGross - curRev)}/mo · <strong style="color:var(--highlight)">${fmt(annUpliftGross)}/yr</strong>
+    </div>
+    <div>
+      <strong style="color:rgba(255,255,255,.8);display:block;margin-bottom:4px">② Warehouse cost</strong>
+      ${fmt(ci.warehouseCostPerUnit)}/wk × ${ci.monthlyUnits} units × ${ci.avgWeeksInWarehouse} wks<br>
+      = ${fmt(monthlyWH)}/mo · <strong style="color:var(--highlight)">${fmt(annWH)}/yr</strong>
+    </div>
+    <div style="grid-column:1/-1;border-top:1px solid rgba(255,255,255,.1);padding-top:10px">
+      <strong style="color:rgba(255,255,255,.8);display:block;margin-bottom:4px">③ Total annual benefit = Margin uplift less commission</strong>
+      ${fmt(annUpliftGross)}/yr uplift − ${fmt(annCommission)}/yr commission (${liloComm}%) = <strong style="color:var(--highlight)">${fmt(annTotal)}/yr</strong>
+    </div>
+  </div></div>`;
 
   // ── KPIs ──
   h+=`<div class="kpi-section"><div class="label">Pilot Success Metrics</div><p style="font-size:13px;color:var(--gray);margin-bottom:16px;line-height:1.6">These KPIs would be tracked during a pilot to evaluate performance against commercial and operational benchmarks.</p>`;
@@ -652,7 +776,7 @@ function renderValue(){
     {name:"Listing Conversion Rate",target:"≥ 70%",desc:"% of listed items that result in a completed sale"},
     {name:"Stock Rejection Rate",target:"≤ 10%",desc:"% of stock received that cannot be listed due to condition"},
     {name:"Cost-to-Serve Ratio",target:"≤ 30%",desc:"Lilo's operational cost as % of resale revenue per partner"},
-    {name:"Partner Margin Recovery",target:"≥ "+fmt(liloNet)+"/mo",desc:"Net monthly revenue returned to partner after commission"},
+    {name:"Partner Margin Recovery",target:"≥ "+fmt(liloNet)+"/mo",desc:"Net monthly revenue returned to partner after "+liloComm+"% commission"},
     {name:"Customer Satisfaction",target:"≥ 4.5/5",desc:"Buyer satisfaction rating for items from this partner"},
     {name:"Operational Friction Score",target:"≤ 2/5",desc:"Internal assessment of process friction during pilot"}
   ];
@@ -799,13 +923,14 @@ function applyUploadData(){
 function renderSummary(){
   const p=PROFILES[state.profile];const pf=isPrefill();const ci=state.calcInputs;
   const{score,max}=calcScore(state.fitAns);const pct=Math.round(score/max*100);const tier=getTier(score,max);
-  const liloRec=48,liloComm=25,liloWks=3;
+  const liloRec=ci.liloRec||48,liloComm=ci.liloComm||25,liloWks=3;
   const curRev=ci.monthlyUnits*ci.avgRRP*(ci.currentRecovery/100);
-  const liloNet=ci.monthlyUnits*ci.avgRRP*(liloRec/100)*(1-liloComm/100);
-  const annUp=(liloNet-curRev)*12;
-  const curWH=ci.monthlyUnits*ci.warehouseCostPerUnit*(ci.avgWeeksInWarehouse/4);
-  const liloWHc=ci.monthlyUnits*ci.warehouseCostPerUnit*(liloWks/4);
-  const total=(liloNet-curRev)*12+(curWH-liloWHc)*12;
+  const liloGross=ci.monthlyUnits*ci.avgRRP*(liloRec/100);
+  const annUpliftGross=(liloGross-curRev)*12;
+  const annCommission=liloGross*(liloComm/100)*12;
+  const annUp=annUpliftGross-annCommission;                // total = uplift less commission
+  const annWH=ci.warehouseCostPerUnit*ci.monthlyUnits*ci.avgWeeksInWarehouse*12;
+  const total=annUp+annWH;
 
   const modelSummary=Object.keys(MODEL_NAMES).map(k=>{
     const val=state.modelAns[k];if(!val||!MODEL_INFO[k][val])return"";
@@ -816,7 +941,7 @@ function renderSummary(){
 
   h+=`<div class="summary-section"><h3>Partnership Summary</h3><div class="summary-grid">`;
   h+=`<div class="summary-block"><div class="sb-label">Partner Fit</div><div class="sb-value" style="color:${tier.color}">${tier.tier}</div><div class="sb-detail">Fit score: ${pct}% — ${tier.sum.split(".")[0]}.</div></div>`;
-  h+=`<div class="summary-block"><div class="sb-label">Est. Annual Benefit</div><div class="sb-value" style="color:var(--sage-m)">${fmt(total)}</div><div class="sb-detail">Margin uplift ${fmt(annUp)} + warehouse saving ${fmt((curWH-liloWHc)*12)}</div></div>`;
+  h+=`<div class="summary-block"><div class="sb-label">Est. Annual Benefit</div><div class="sb-value" style="color:var(--sage-m)">${fmt(total)}</div><div class="sb-detail">Margin uplift ${fmt(annUp)} + warehouse saving ${fmt(annWH)}</div></div>`;
   h+=`<div class="summary-block"><div class="sb-label">Operating Model</div><div class="sb-value" style="font-size:16px">${modelSummary.slice(0,2).join(" + ")}</div><div class="sb-detail">${modelSummary.slice(2).join(" · ")}</div></div>`;
   h+=`<div class="summary-block"><div class="sb-label">Scale Pathway</div><div class="sb-value" style="font-size:16px">12-Week Pilot</div><div class="sb-detail">${Math.round(ci.monthlyUnits*0.7)}+ units/month target · ${liloWks}-week sell-through · 6/8 criteria to scale</div></div>`;
   h+=`</div></div>`;
@@ -931,7 +1056,7 @@ function updateEcon(k,v){state.econInputs[k]=Number(v);renderContent();}
 function renderEcon(){
   const p=PROFILES[state.profile];const pf=isPrefill();
   const ci=state.calcInputs;const ei=state.econInputs;
-  const liloRec=48,liloComm=25,liloWks=3;
+  const liloRec=ci.liloRec||48,liloComm=ci.liloComm||25,liloWks=3;
 
   // Revenue per unit
   const salePrice=ci.avgRRP*(liloRec/100);
